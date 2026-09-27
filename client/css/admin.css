@@ -37,6 +37,26 @@
 }
 .login-error.show { display: block; }
 
+.login-wrap p.login-back-wrap {
+  margin-top: 32px;
+  margin-bottom: 0;
+  text-align: center;
+}
+.login-back-link {
+  color: var(--color-text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.15s ease;
+}
+.login-back-link:hover,
+.login-back-link:focus-visible {
+  color: var(--color-dark-green);
+}
+
 /* ---- Dashboard header row ---- */
 .admin-header {
   display: flex;
