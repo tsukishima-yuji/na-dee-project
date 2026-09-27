@@ -1,0 +1,30 @@
+[build]
+  # No build step needed for the client — it's plain HTML/CSS/JS.
+  # Netlify still runs `npm install` at the repo root automatically
+  # (because package.json exists) so the functions get @netlify/blobs.
+  publish = "client"
+
+[functions]
+  directory = "netlify/functions"
+
+# Friendly URLs: the client calls /api/... and Netlify quietly
+# forwards those requests to the actual function files.
+[[redirects]]
+  from = "/api/scenarios/:id"
+  to = "/.netlify/functions/scenarios?id=:id"
+  status = 200
+
+[[redirects]]
+  from = "/api/scenarios"
+  to = "/.netlify/functions/scenarios"
+  status = 200
+
+[[redirects]]
+  from = "/api/login"
+  to = "/.netlify/functions/login"
+  status = 200
+
+[[redirects]]
+  from = "/api/match"
+  to = "/.netlify/functions/match"
+  status = 200

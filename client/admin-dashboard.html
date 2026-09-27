@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Na-Dee — Admin Dashboard</title>
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/admin.css" />
+</head>
+<body data-page="admin">
+
+<div class="app-shell no-bottom-nav">
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="brand-pill"><span class="dot"></span> <span data-i18n="brand">นาดี</span></span>
+      <span class="role-pill" data-i18n="role_farmer">เกษตรกร</span>
+    </div>
+    <div class="topbar-right">
+      <button class="pill-btn" id="logoutBtn" data-i18n="admin_logout">ออกจากระบบ</button>
+      <button class="lang-toggle" id="langToggleBtn">ไทย / EN</button>
+    </div>
+  </header>
+
+  <div class="admin-header">
+    <h1 data-i18n="admin_all_scenarios">Scenario ทั้งหมด</h1>
+    <button class="btn-add" id="addScenarioBtn">+ <span data-i18n="admin_add">เพิ่ม</span></button>
+  </div>
+
+  <!-- Scenario list, filled in by admin-dashboard.js -->
+  <section class="scenario-list" id="scenarioList"></section>
+
+  <h2 class="summary-title" data-i18n="admin_summary_title">สรุประบบ</h2>
+  <section class="stats-row">
+    <div class="stat-box">
+      <div class="stat-number" id="summaryScenarioCount">0</div>
+      <div class="stat-label" data-i18n="admin_summary_scenario">Scenario</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-number" id="summaryProvinceCount">0</div>
+      <div class="stat-label" data-i18n="admin_summary_province">จังหวัด</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-number" id="summaryCropCount">0</div>
+      <div class="stat-label" data-i18n="admin_summary_crop">พันธุ์</div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ===== Add / Edit scenario modal ===== -->
+<div class="modal-overlay hidden" id="scenarioModalOverlay">
+  <div class="modal-sheet">
+    <h2 class="modal-title" id="scenarioModalTitle">เพิ่ม Scenario ใหม่</h2>
+    <form id="scenarioForm" novalidate>
+      <div class="field">
+        <label data-i18n="modal_name_label">ชื่อ Scenario</label>
+        <input type="text" id="nameThInput" data-i18n-placeholder="modal_name_placeholder" placeholder="เช่น ข้าวโพด — ดินร่วน" required />
+      </div>
+      <div class="field">
+        <label data-i18n="modal_province_label">จังหวัด</label>
+        <input type="text" id="provinceInput" placeholder="ขอนแก่น / อุดรธานี" required />
+      </div>
+      <div class="field">
+        <label data-i18n="modal_water_label">ปริมาณน้ำที่แนะนำ (ลบ.ม./สัปดาห์)</label>
+        <input type="number" id="waterInput" min="0" data-i18n-placeholder="modal_water_placeholder" placeholder="เช่น 900" />
+      </div>
+      <div class="field">
+        <label data-i18n="modal_frequency_label">ความถี่การให้น้ำ</label>
+        <input type="text" id="frequencyInput" data-i18n-placeholder="modal_frequency_placeholder" placeholder="เช่น 3 ครั้ง/สัปดาห์" />
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" id="cancelModalBtn" data-i18n="modal_cancel">ยกเลิก</button>
+        <button type="submit" class="btn-primary" data-i18n="modal_save">บันทึก</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== Delete confirm modal ===== -->
+<div class="modal-overlay hidden" id="deleteModalOverlay">
+  <div class="modal-sheet">
+    <h2 class="modal-title" data-i18n="modal_delete_title">ยืนยันการลบ Scenario</h2>
+    <p id="deleteModalBody" style="color:var(--color-text-muted); font-size:14px; margin-bottom:18px;"></p>
+    <div class="modal-actions">
+      <button type="button" class="btn-secondary" id="cancelDeleteBtn" data-i18n="modal_cancel">ยกเลิก</button>
+      <button type="button" class="btn-danger" id="confirmDeleteBtn" data-i18n="modal_delete_confirm">ลบ Scenario</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/main.js"></script>
+<script src="js/admin-dashboard.js"></script>
+</body>
+</html>

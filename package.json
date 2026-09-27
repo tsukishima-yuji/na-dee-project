@@ -1,0 +1,9 @@
+{
+  "name": "na-dee-project",
+  "private": true,
+  "description": "Na-Dee water management advisor — client + Netlify Functions",
+  "dependencies": {
+    "@netlify/blobs": "^7.0.1",
+    "bcryptjs": "^3.0.3"
+  }
+}

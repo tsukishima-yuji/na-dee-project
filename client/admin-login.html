@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Na-Dee — Admin Sign In</title>
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/admin.css" />
+</head>
+<body data-page="admin">
+
+<div class="app-shell">
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="brand-pill"><span class="dot"></span> <span data-i18n="brand">นาดี</span></span>
+      <span class="role-pill" data-i18n="role_farmer">เกษตรกร</span>
+    </div>
+    <div class="topbar-right">
+      <button class="pill-btn" id="adminEntryBtn" data-i18n="admin_btn">Admin</button>
+      <button class="lang-toggle" id="langToggleBtn">ไทย / EN</button>
+    </div>
+  </header>
+
+  <div class="login-wrap">
+    <div class="login-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15" r="1.5"/>
+      </svg>
+    </div>
+    <h1 data-i18n="login_title">เข้าสู่ระบบผู้ดูแล</h1>
+    <p data-i18n="login_subtitle">สำหรับผู้จัดการข้อมูล</p>
+
+    <form id="loginForm" class="login-form" novalidate>
+      <p id="loginError" class="login-error" data-i18n="login_error">อีเมลหรือรหัสผ่านไม่ถูกต้อง</p>
+
+      <div class="field">
+        <label data-i18n="login_email">ชื่อเมล</label>
+        <input type="email" id="emailInput" placeholder="professor@kku.ac.th" required />
+      </div>
+      <div class="field">
+        <label data-i18n="login_password">รหัสผ่าน</label>
+        <input type="password" id="passwordInput" placeholder="••••••••" required />
+      </div>
+
+      <button type="submit" class="btn-primary" id="loginBtn" data-i18n="login_button">เข้าสู่ระบบ</button>
+    </form>
+
+    <p style="margin-top:18px;">
+      <a href="index.html" style="color:var(--color-text-muted); font-size:13px;" data-i18n="login_back">กลับหน้าแรก</a>
+    </p>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/main.js"></script>
+<script src="js/admin-auth.js"></script>
+</body>
+</html>
