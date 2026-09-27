@@ -96,7 +96,22 @@
 .icon-btn.delete { background: #fdecea; color: #b3261e; }
 
 /* ---- Summary stats (reuse stat-box from home.css) ---- */
-.summary-title { font-size: 13px; font-weight: 700; color: var(--color-text-muted); padding: 4px 16px 8px; }
+.summary-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  padding: 4px 16px 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.summary-title::before {
+  content: "";
+  width: 3px;
+  height: 14px;
+  background: var(--color-dark-green);
+  border-radius: 2px;
+}
 
 /* ---- Empty state ---- */
 .empty-state {
@@ -122,6 +137,24 @@
   box-shadow: 0 4px 14px rgba(232, 99, 15, 0.4);
 }
 .fab svg { width: 24px; height: 24px; color: #fff; }
+
+/* ---- Admin bottom nav (single dashboard icon, no labels) ---- */
+.admin-nav {
+  justify-content: center;
+  align-items: center;
+}
+.nav-icon-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--color-orange);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(232, 99, 15, 0.4);
+}
+.nav-icon-btn svg { width: 24px; height: 24px; color: #fff; }
 
 
 /* ---- Admin summary stats ---- */

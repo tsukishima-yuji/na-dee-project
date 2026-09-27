@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   document.getElementById("logoutBtn").addEventListener("click", () => {
     adminLogout();
-    window.location.href = "admin-login.html";
+    window.location.href = "index.html";
   });
 
   document.getElementById("addScenarioBtn").addEventListener("click", () => openScenarioModal(null));
@@ -101,7 +101,6 @@ async function openScenarioModal(scenarioId) {
     const scenario = scenarios.find((s) => s.scenario_id === scenarioId);
     if (scenario) {
       document.getElementById("nameThInput").value = scenario.name_th || "";
-      document.getElementById("nameEnInput").value = scenario.name_en || "";
       document.getElementById("provinceInput").value = scenario.province || "";
       document.getElementById("waterInput").value = scenario.water_allocation_week ?? "";
       document.getElementById("frequencyInput").value = scenario.irrigation_frequency || "";
@@ -119,7 +118,6 @@ async function handleScenarioFormSubmit(event) {
   event.preventDefault();
   const data = {
     name_th: document.getElementById("nameThInput").value.trim(),
-    name_en: document.getElementById("nameEnInput").value.trim(),
     province: document.getElementById("provinceInput").value.trim(),
     water_allocation_week: Number(document.getElementById("waterInput").value) || 0,
     irrigation_frequency: document.getElementById("frequencyInput").value.trim(),
