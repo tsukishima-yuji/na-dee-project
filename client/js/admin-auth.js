@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     errorBox.classList.remove("show");
     submitBtn.disabled = true;
 
-    const result = await adminLogin(email, password); // mock-api.js
+    const result = await adminLogin(email, password); // api.js
     if (result.success) {
       window.location.href = "admin-dashboard.html";
     } else {

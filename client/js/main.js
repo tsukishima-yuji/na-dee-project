@@ -24,7 +24,7 @@
 const TRANSLATIONS = {
   th: {
     brand: "นาดี", role_farmer: "เกษตรกร", admin_btn: "Admin",
-    home_eyebrow: "ขอต้อนรับ · อุดรธานี",
+    home_eyebrow: "ขอนแก่น · อุดรธานี",
     home_title: "เลือกแนวทางการจัดการน้ำสำหรับมันสำปะหลังของคุณ",
     home_desc: "เลือกจังหวัด พันธุ์ วันที่ปลูก และวิธีการให้น้ำ ระบบจะจับคู่กับสถานการณ์ที่ใกล้เคียงที่สุด และคาดการณ์ผลผลิตให้ทันที",
     home_cta: "เริ่มกรอกข้อมูล",
@@ -53,7 +53,7 @@ const TRANSLATIONS = {
     admin_summary_province: "จังหวัด", admin_summary_crop: "พันธุ์",
     admin_logout: "ออกจากระบบ", admin_empty: "ยังไม่มี Scenario กรุณาเพิ่มรายการใหม่",
     modal_add_title: "เพิ่ม Scenario ใหม่", modal_edit_title: "แก้ไข Scenario",
-    modal_name_label: "ชื่อ Scenario", modal_name_placeholder: "เช่น ข้าวโพด — ดินร่วน",
+    modal_name_label: "ชื่อ Scenario", modal_name_placeholder: "เช่น เกษตรกรรายย่อย — พึ่งน้ำฝน",
     modal_water_label: "ปริมาณน้ำที่แนะนำ (ลบ.ม./สัปดาห์)", modal_water_placeholder: "เช่น 900",
     modal_frequency_label: "ความถี่การให้น้ำ", modal_frequency_placeholder: "เช่น 3 ครั้ง/สัปดาห์",
     modal_province_label: "จังหวัด",
@@ -70,7 +70,7 @@ const TRANSLATIONS = {
     home_title: "Choose a water management approach for your cassava field",
     home_desc: "Select your province, variety, planting date, and irrigation method. The system will match it with the closest scenario and instantly predict the yield.",
     home_cta: "Start entering your data",
-    stat_scenarios: "Scenarios", stat_provinces: "Provinces", stat_areas: "Zones",
+    stat_scenarios: "Scenarios", stat_provinces: "Areas", stat_areas: "Provinces",
     home_section_title: "4 main management approaches",
     scenario_1_name: "Smallholder farmer", scenario_1_sub: "Low cost · rain-fed", scenario_1_badge: "Medium-low yield",
     scenario_2_name: "Boost yield with guidance", scenario_2_sub: "Efficient water use", scenario_2_badge: "Medium-high yield",
@@ -95,7 +95,7 @@ const TRANSLATIONS = {
     admin_summary_province: "Provinces", admin_summary_crop: "Varieties",
     admin_logout: "Log out", admin_empty: "No scenarios yet. Add a new one to get started.",
     modal_add_title: "Add new scenario", modal_edit_title: "Edit scenario",
-    modal_name_label: "Scenario name", modal_name_placeholder: "e.g. Corn — loam soil",
+    modal_name_label: "Scenario name", modal_name_placeholder: "e.g. Smallholder farmer — rain-fed",
     modal_water_label: "Recommended water (m3/week)", modal_water_placeholder: "e.g. 900",
     modal_frequency_label: "Irrigation frequency", modal_frequency_placeholder: "e.g. 3 times/week",
     modal_province_label: "Province",
@@ -143,6 +143,13 @@ function toggleLanguage() {
   const next = getLang() === "th" ? "en" : "th";
   localStorage.setItem("nadee_lang", next);
   applyLanguage();
+}
+
+function toggleLanguage() {
+  const next = getLang() === "th" ? "en" : "th";
+  localStorage.setItem("nadee_lang", next);
+  applyLanguage();
+  if (typeof renderDashboard === "function") renderDashboard();
 }
 
 /** Show a small message at the bottom of the screen for a couple of seconds. */

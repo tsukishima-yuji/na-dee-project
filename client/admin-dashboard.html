@@ -66,11 +66,15 @@
     <form id="scenarioForm" novalidate>
       <div class="field">
         <label data-i18n="modal_name_label">ชื่อ Scenario</label>
-        <input type="text" id="nameThInput" data-i18n-placeholder="modal_name_placeholder" placeholder="เช่น ข้าวโพด — ดินร่วน" required />
+        <input type="text" id="nameThInput" data-i18n-placeholder="modal_name_placeholder" placeholder="เช่น เกษตรกรรายย่อย — พึ่งน้ำฝน" required />
       </div>
+    
       <div class="field">
         <label data-i18n="modal_province_label">จังหวัด</label>
-        <input type="text" id="provinceInput" placeholder="ขอนแก่น / อุดรธานี" required />
+        <select id="provinceInput" required>
+          <option value="khon_kaen" data-i18n="form_province_kk">ขอนแก่น</option>
+          <option value="udon_thani" data-i18n="form_province_ud">อุดรธานี</option>
+        </select>
       </div>
       <div class="field">
         <label data-i18n="modal_water_label">ปริมาณน้ำที่แนะนำ (ลบ.ม./สัปดาห์)</label>

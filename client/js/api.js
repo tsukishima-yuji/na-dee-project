@@ -1,7 +1,7 @@
 /* =========================================================
    api.js
 
-   This REPLACES mock-api.js. It has the exact same function
+   This REPLACES api.js. It has the exact same function
    names (getScenarios, addScenario, updateScenario,
    deleteScenario, submitFarmerInput, adminLogin,
    isAdminLoggedIn, adminLogout) so nothing else in the app had

@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 async function renderDashboard() {
-  const scenarios = await getScenarios(); // mock-api.js
+  const scenarios = await getScenarios(); // api.js
   renderSummary(scenarios);
   renderScenarioList(scenarios);
 }
@@ -50,7 +50,7 @@ function renderSummary(scenarios) {
 }
 
 function nameFor(scenario) {
-  return getLang() === "th" ? scenario.name_th : scenario.name_en;
+  return getLang() === "th" ? scenario.name_th : (scenario.name_en || scenario.name_th);
 }
 
 function renderScenarioList(scenarios) {
@@ -68,7 +68,7 @@ function renderScenarioList(scenarios) {
     card.innerHTML = `
       <div>
         <div class="scenario-name">${escapeHtml(nameFor(scenario))}</div>
-        <div class="scenario-sub">${escapeHtml(scenario.province)} · ${escapeHtml(scenario.irrigation_frequency || "-")}</div>
+        <div class="scenario-sub">${escapeHtml(provinceLabel(scenario.province))} · ${escapeHtml(scenario.irrigation_frequency || "-")}</div>
       </div>
       <div class="scenario-card-actions">
         <button class="icon-btn edit" data-id="${scenario.scenario_id}" aria-label="edit">✎</button>
@@ -170,6 +170,10 @@ async function handleConfirmDelete() {
   }
 }
 
+function provinceLabel(code) {
+  const keys = { khon_kaen: "form_province_kk", udon_thani: "form_province_ud" };
+  return keys[code] ? t(keys[code]) : code;
+}
 /* ---------------- helpers ---------------- */
 
 function escapeHtml(str) {

@@ -37,10 +37,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const submitBtn = document.getElementById("submitBtn");
     submitBtn.disabled = true;
     try {
-      await submitFarmerInput(formData); // defined in mock-api.js
+      await submitFarmerInput(formData); // defined in api.js
       showToast(t("form_submitted_toast"));
-      // A teammate's result.html would normally be next; for now we
-      // just return to the home page after a short pause.
+     
       setTimeout(() => (window.location.href = "index.html"), 900);
     } catch (err) {
       showToast(t("toast_error"));
