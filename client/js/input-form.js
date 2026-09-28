@@ -1,7 +1,7 @@
 /* =========================================================
    input-form.js — logic for input-form.html only
    Handles: selecting toggle-pills, validating the form,
-   and "submitting" the farmer's data through mock-api.js
+   and "submitting" the farmer's data.
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {

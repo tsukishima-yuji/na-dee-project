@@ -52,5 +52,5 @@ password with `bcryptjs` the same way `login.js` does.
 - `client/` — static frontend (HTML/CSS/JS), served as the site root
 - `netlify/functions/` — serverless backend endpoints:
   - `login.js` — admin login (implemented)
-  - `scenarios.js` — scenario CRUD (implemented, but need to fill)
+  - `scenarios.js` — scenario (implemented, but need to fill)
   - `match.js` — farmer input matching (not implemented yet)

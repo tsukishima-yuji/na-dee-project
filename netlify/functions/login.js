@@ -12,9 +12,8 @@
    FIRST RUN: there are no admins yet, so the very first login
    attempt auto-creates one default admin account (see
    ensureDefaultAdmin below) using DEFAULT_ADMIN_EMAIL /
-   DEFAULT_ADMIN_PASSWORD from your Netlify environment
-   variables, or the fallback credentials if you haven't set
-   those. Log in once with that account, then see the README
+   DEFAULT_ADMIN_PASSWORD from Netlify environment
+   variables, or the fallback credentials. Log in once with that account, then see the README
    for how to add more admins (there's no "sign up" screen —
    this app assumes admins are added by whoever runs the site).
    ========================================================= */

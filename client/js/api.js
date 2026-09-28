@@ -71,8 +71,8 @@ async function submitFarmerInput(formData) {
 
 /** POST /api/login
  *  NOTE: "being logged in" is correctly kept PER DEVICE — that's how
- *  every website works (logging into Gmail on your phone doesn't log
- *  your laptop in too). Only the actual scenario DATA needs to be
+ *  every website works (logging into Gmail on phone doesn't log
+ * in laptop in too). Only the actual scenario DATA needs to be
  *  shared; the login state is meant to stay local. */
 async function adminLogin(email, password) {
   const res = await fetch(`${API_BASE}/login`, {

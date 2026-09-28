@@ -11,7 +11,7 @@
      It is the exact same content as /assets/lang/th.json and
      /assets/lang/en.json — kept here as a plain JS object so the
      pages work even when opened directly as a file (no local
-     server needed). If/when the app is served from Netlify, you
+     server needed). If/when the app is served from Netlify,
      could instead `fetch('/assets/lang/th.json')`; the JSON files
      are already there and ready for that swap.
    - Any element that should change language gets:
