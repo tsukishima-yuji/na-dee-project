@@ -30,21 +30,6 @@ project's test admin account):
 - email: `nadee102026@gmail.com`
 - password: `adminNaDee102026`
 
-It can override these defaults before the first run by setting
-environment variables (in Netlify's site settings, or in a local
-`.env` file read by `netlify dev`):
-
-```
-DEFAULT_ADMIN_EMAIL=you@example.com
-DEFAULT_ADMIN_PASSWORD=your-own-password
-```
-
-
-To add more admins later, since there's no in-app UI for it yet, it
-can write directly to the same Blobs store from a small one-off
-Netlify Function or script using `@netlify/blobs`, hashing the
-password with `bcryptjs` the same way `login.js` does.
-
 ## Project structure
 
 - `client/` — static frontend (HTML/CSS/JS), served as the site root
