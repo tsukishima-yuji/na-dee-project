@@ -45,8 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const name = getLang() === "th" ? best.name_th : best.name_en || best.name_th;
       showToast(`${name} · ${best.match_percent}%`);
 
-      // TODO: switch to "result.html" once the result page is built
-      setTimeout(() => (window.location.href = "index.html"), 1500);
+      setTimeout(() => (window.location.href = "result.html"), 700);
     } catch (err) {
       showToast(t("toast_error"));
       submitBtn.disabled = false;

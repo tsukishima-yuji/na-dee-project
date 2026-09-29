@@ -1,0 +1,296 @@
+/* =========================================================
+   result-compare.css — styles for result.html and compare.html
+   Reuses tokens from style.css and cards from home.css
+   ========================================================= */
+
+/* ---- Page header (compare) ---- */
+.page-header {
+  padding: 6px 16px 14px;
+}
+.page-header h1 {
+  font-size: 19px;
+  font-weight: 800;
+  margin: 0 0 4px;
+  padding-left: 10px;
+  border-left: 4px solid #4caf82;
+}
+.page-header p {
+  margin: 0;
+  padding-left: 14px;
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.compare-province {
+  padding: 0 16px 18px;
+}
+
+/* ---- Result hero ---- */
+.result-hero-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.result-hero .hero-title {
+  margin-bottom: 14px;
+}
+.result-hero .hero-desc {
+  margin: 0 0 14px;
+}
+
+/* Circular match % gauge (conic-gradient, --p = 0..100) */
+.match-ring {
+  --size: 68px;
+  flex-shrink: 0;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: conic-gradient(#6de79a calc(var(--p) * 1%), rgba(255, 255, 255, 0.15) 0);
+  display: grid;
+  place-items: center;
+}
+.match-ring span {
+  width: calc(var(--size) - 14px);
+  height: calc(var(--size) - 14px);
+  border-radius: 50%;
+  background: var(--color-dark-green-2);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.input-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.input-chips span {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-full);
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.stat-box .stat-sub {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+
+/* ---- Generic white card with rows ---- */
+.info-card {
+  margin: 0 16px 18px;
+  background: #fff;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 6px 16px;
+}
+.info-row {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.info-row:last-child {
+  border-bottom: none;
+}
+.info-icon {
+  font-size: 18px;
+  line-height: 1.3;
+}
+.info-label {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+.info-value {
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* ---- Match breakdown ---- */
+.breakdown-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 14px;
+}
+.breakdown-row:last-child {
+  border-bottom: none;
+}
+.breakdown-mark {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 800;
+}
+.breakdown-row.ok .breakdown-mark {
+  background: #e7f3ec;
+  color: var(--color-badge-green);
+}
+.breakdown-row.miss .breakdown-mark {
+  background: #f6e7e4;
+  color: #b3261e;
+}
+.breakdown-label {
+  flex: 1;
+}
+.breakdown-points {
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.source-note {
+  margin: 14px 16px 0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.result-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px 16px 8px;
+}
+
+.empty-card {
+  margin: 30px 16px;
+  background: #fff;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 24px 18px;
+  text-align: center;
+}
+.empty-card p {
+  margin: 0 0 16px;
+  color: var(--color-text-muted);
+}
+
+.loading-note {
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: 24px 16px;
+}
+
+/* ---- Bar chart (compare) ---- */
+.metric-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 10px 0 6px;
+}
+.metric-tab {
+  flex: 1;
+  border: 1.5px solid var(--color-border);
+  background: #fff;
+  border-radius: var(--radius-full);
+  padding: 7px 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+.metric-tab.active {
+  background: var(--color-dark-green);
+  border-color: var(--color-dark-green);
+  color: #fff;
+}
+
+.bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 10px 0 4px;
+}
+.bar-label {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.bar-track {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.bar-fill {
+  height: 14px;
+  border-radius: var(--radius-full);
+  background: #7fb89b;
+  transition: width 0.3s ease;
+}
+.bar-row.is-best .bar-fill {
+  background: var(--color-orange);
+}
+.bar-value {
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.bar-unit {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  text-align: right;
+  margin: 4px 0 8px;
+}
+.best-tag {
+  display: inline-block;
+  background: #fde9dc;
+  color: var(--color-orange-dark);
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+/* ---- Table (compare) — scrolls sideways on phones ---- */
+.table-wrap {
+  margin: 0 16px;
+  overflow-x: auto;
+  background: #fff;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+}
+.compare-table {
+  border-collapse: collapse;
+  min-width: 620px;
+  width: 100%;
+  font-size: 13px;
+}
+.compare-table th,
+.compare-table td {
+  padding: 11px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+}
+.compare-table th {
+  font-size: 12px;
+  background: #f7f4ec;
+  white-space: nowrap;
+}
+.compare-table th small {
+  display: block;
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
+.compare-table tbody tr:last-child td {
+  border-bottom: none;
+}
+.compare-table .name-cell {
+  font-weight: 700;
+  position: sticky;
+  left: 0;
+  background: #fff;
+  min-width: 140px;
+}
+.compare-table tr.is-best td {
+  background: #fff5ee;
+}

@@ -70,7 +70,21 @@ const TRANSLATIONS = {
     modal_wue_label: "WUE (กก./ลบ.ม.)", modal_n_label: "ปุ๋ยไนโตรเจน",
     modal_schedule_label: "ตารางให้น้ำรายสัปดาห์", modal_source_label: "แหล่งอ้างอิงข้อมูล",
     admin_seed_btn: "โหลดข้อมูลจากงานวิจัย (8 Scenario)", toast_seeded: "โหลดข้อมูล Scenario เรียบร้อยแล้ว",
-    irrigation_short_rain: "พึ่งน้ำฝน", irrigation_short_system: "ให้น้ำ", unit_ton_rai: "ตัน/ไร่"
+    irrigation_short_rain: "พึ่งน้ำฝน", irrigation_short_system: "ให้น้ำ", unit_ton_rai: "ตัน/ไร่",
+    // --- result / compare pages ---
+    unit_rai: "ไร่", unit_m3_rai_week: "ลบ.ม./ไร่/สัปดาห์", unit_kg_m3: "กก./ลบ.ม.",
+    result_empty: "ยังไม่มีผลการวิเคราะห์ กรอกข้อมูลแปลงเพื่อรับคำแนะนำ",
+    result_eyebrow: "แนวทางที่เหมาะกับแปลงของคุณ",
+    result_outputs_title: "ผลที่คาดการณ์ทั้งแปลง", result_total_yield: "ผลผลิต (ตัน)", result_total_water: "น้ำ (ลบ.ม./สัปดาห์)",
+    result_advice_title: "คำแนะนำการจัดการน้ำ", result_frequency: "ความถี่การให้น้ำ", result_schedule: "ตารางให้น้ำ",
+    result_fertilizer: "ปุ๋ยไนโตรเจน", result_variety: "พันธุ์ที่ใช้ในข้อมูลอ้างอิง",
+    result_why_title: "ทำไมถึงได้แนวทางนี้", result_other_title: "แนวทางอื่นในจังหวัดเดียวกัน",
+    result_source: "แหล่งข้อมูล", result_compare_btn: "เปรียบเทียบทุก Scenario", result_again_btn: "กรอกข้อมูลใหม่",
+    compare_title: "เปรียบเทียบ Scenario", compare_desc: "เทียบผลผลิตและการใช้น้ำของทุกแนวทางในจังหวัดเดียวกัน",
+    compare_loading: "กำลังโหลดข้อมูล...", compare_empty: "ยังไม่มี Scenario ของจังหวัดนี้",
+    compare_chart_title: "กราฟเปรียบเทียบ", compare_table_title: "ตารางเปรียบเทียบ",
+    compare_metric_yield: "ผลผลิต", compare_metric_water: "น้ำ/สัปดาห์", compare_metric_wue: "WUE",
+    compare_your_match: "ของคุณ", compare_note: "WUE = ผลผลิตต่อปริมาณน้ำที่ใช้ทั้งหมด ยิ่งสูงยิ่งใช้น้ำคุ้มค่า"
   },
   en: {
     brand: "Na-Dee", role_farmer: "Farmer", admin_btn: "Admin",
@@ -120,7 +134,21 @@ const TRANSLATIONS = {
     modal_wue_label: "WUE (kg/m³)", modal_n_label: "Nitrogen fertilizer",
     modal_schedule_label: "Weekly irrigation schedule", modal_source_label: "Data source / reference",
     admin_seed_btn: "Load research dataset (8 scenarios)", toast_seeded: "Scenario dataset loaded",
-    irrigation_short_rain: "Rain-fed", irrigation_short_system: "Irrigated", unit_ton_rai: "t/rai"
+    irrigation_short_rain: "Rain-fed", irrigation_short_system: "Irrigated", unit_ton_rai: "t/rai",
+    // --- result / compare pages ---
+    unit_rai: "rai", unit_m3_rai_week: "m³/rai/week", unit_kg_m3: "kg/m³",
+    result_empty: "No result yet. Fill in your field information to get a recommendation.",
+    result_eyebrow: "Best approach for your field",
+    result_outputs_title: "Predicted for your whole field", result_total_yield: "Yield (tons)", result_total_water: "Water (m³/week)",
+    result_advice_title: "Water management advice", result_frequency: "Irrigation frequency", result_schedule: "Irrigation schedule",
+    result_fertilizer: "Nitrogen fertilizer", result_variety: "Varieties in reference data",
+    result_why_title: "Why this approach", result_other_title: "Other approaches in this province",
+    result_source: "Data source", result_compare_btn: "Compare all scenarios", result_again_btn: "Enter new data",
+    compare_title: "Compare scenarios", compare_desc: "Yield and water use of every approach in the same province",
+    compare_loading: "Loading...", compare_empty: "No scenarios for this province yet",
+    compare_chart_title: "Comparison chart", compare_table_title: "Comparison table",
+    compare_metric_yield: "Yield", compare_metric_water: "Water/week", compare_metric_wue: "WUE",
+    compare_your_match: "Yours", compare_note: "WUE = yield per unit of total water used; higher means more yield per drop"
   }
 };
 
@@ -166,6 +194,7 @@ function toggleLanguage() {
   localStorage.setItem("nadee_lang", next);
   applyLanguage();
   if (typeof renderDashboard === "function") renderDashboard();
+  if (typeof renderPage === "function") renderPage(); // result.html / compare.html
 }
 
 /** Show a small message at the bottom of the screen for a couple of seconds. */
