@@ -24,13 +24,13 @@ key-value store — no separate database to set up) and passwords are
 hashed with bcrypt before they're stored.
 
 There's no sign-up screen yet, so the **first time** `/api/login` runs,
-it automatically creates one default admin account for you (the
+it automatically creates one default admin account (the
 project's test admin account):
 
 - email: `nadee102026@gmail.com`
 - password: `adminNaDee102026`
 
-You can override these defaults before the first run by setting
+It can override these defaults before the first run by setting
 environment variables (in Netlify's site settings, or in a local
 `.env` file read by `netlify dev`):
 
@@ -39,10 +39,8 @@ DEFAULT_ADMIN_EMAIL=you@example.com
 DEFAULT_ADMIN_PASSWORD=your-own-password
 ```
 
-⚠️ Change the fallback password after your first login if you used it,
-since it's visible in this README.
 
-To add more admins later, since there's no in-app UI for it yet, you
+To add more admins later, since there's no in-app UI for it yet, it
 can write directly to the same Blobs store from a small one-off
 Netlify Function or script using `@netlify/blobs`, hashing the
 password with `bcryptjs` the same way `login.js` does.
