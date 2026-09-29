@@ -59,6 +59,12 @@ async function deleteScenario(id) {
   return handleResponse(res);
 }
 
+/** POST /api/scenarios?seed=1 — load the research dataset (only works when empty) */
+async function seedScenarios() {
+  const res = await fetch(`${API_BASE}/scenarios?seed=1`, { method: "POST" });
+  return handleResponse(res);
+}
+
 /** POST /api/match — farmer input form submission */
 async function submitFarmerInput(formData) {
   const res = await fetch(`${API_BASE}/match`, {

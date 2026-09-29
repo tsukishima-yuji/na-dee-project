@@ -64,11 +64,20 @@
   <div class="modal-sheet">
     <h2 class="modal-title" id="scenarioModalTitle">เพิ่ม Scenario ใหม่</h2>
     <form id="scenarioForm" novalidate>
+      <!-- ---- Basic info ---- -->
+      <div class="modal-section" data-i18n="modal_section_info">ข้อมูลทั่วไป</div>
       <div class="field">
         <label data-i18n="modal_name_label">ชื่อ Scenario</label>
         <input type="text" id="nameThInput" data-i18n-placeholder="modal_name_placeholder" placeholder="เช่น เกษตรกรรายย่อย — พึ่งน้ำฝน" required />
       </div>
-    
+      <div class="field">
+        <label data-i18n="modal_name_en_label">ชื่อภาษาอังกฤษ</label>
+        <input type="text" id="nameEnInput" placeholder="e.g. Smallholder — Rain-fed" />
+      </div>
+      <div class="field">
+        <label data-i18n="modal_description_label">คำอธิบาย</label>
+        <textarea id="descriptionInput" rows="2"></textarea>
+      </div>
       <div class="field">
         <label data-i18n="modal_province_label">จังหวัด</label>
         <select id="provinceInput" required>
@@ -76,13 +85,63 @@
           <option value="udon_thani" data-i18n="form_province_ud">อุดรธานี</option>
         </select>
       </div>
+
+      <!-- ---- Matching conditions (compared with the farmer's form) ---- -->
+      <div class="modal-section" data-i18n="modal_section_match">เงื่อนไขการจับคู่</div>
       <div class="field">
-        <label data-i18n="modal_water_label">ปริมาณน้ำที่แนะนำ (ลบ.ม./สัปดาห์)</label>
-        <input type="number" id="waterInput" min="0" data-i18n-placeholder="modal_water_placeholder" placeholder="เช่น 900" />
+        <label data-i18n="modal_variety_label">พันธุ์ (คั่นด้วย , )</label>
+        <input type="text" id="varietyInput" placeholder="ห้วยบง 80, ระยอง 11" />
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label data-i18n="form_planting_date">วันปลูก</label>
+          <select id="plantingInput">
+            <option value="early" data-i18n="form_planting_early">ต้นฤดูฝน (พ.ค.-มิ.ย.)</option>
+            <option value="late" data-i18n="form_planting_late">ปลายฤดูฝน (ต.ค.-พ.ย.)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label data-i18n="form_irrigation">การให้น้ำ</label>
+          <select id="irrigationInput">
+            <option value="rain_fed" data-i18n="form_irrigation_rain">อาศัยน้ำฝน (ไม่ให้น้ำเพิ่ม)</option>
+            <option value="system" data-i18n="form_irrigation_system">ให้น้ำตามคำแนะนำระบบ</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ---- Outputs shown to the farmer ---- -->
+      <div class="modal-section" data-i18n="modal_section_output">ผลลัพธ์ / คำแนะนำ</div>
+      <div class="field-row">
+        <div class="field">
+          <label data-i18n="modal_yield_label">ผลผลิต (ตัน/ไร่)</label>
+          <input type="number" id="yieldInput" min="0" step="0.1" placeholder="12.0" />
+        </div>
+        <div class="field">
+          <label data-i18n="modal_water_label">น้ำ (ลบ.ม./ไร่/สัปดาห์)</label>
+          <input type="number" id="waterInput" min="0" step="0.1" data-i18n-placeholder="modal_water_placeholder" placeholder="เช่น 14" />
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label data-i18n="modal_wue_label">WUE (กก./ลบ.ม.)</label>
+          <input type="number" id="wueInput" min="0" step="0.1" placeholder="7.5" />
+        </div>
+        <div class="field">
+          <label data-i18n="modal_n_label">ปุ๋ยไนโตรเจน</label>
+          <input type="text" id="nFertilizerInput" placeholder="14.4 กก.N/ไร่" />
+        </div>
       </div>
       <div class="field">
         <label data-i18n="modal_frequency_label">ความถี่การให้น้ำ</label>
-        <input type="text" id="frequencyInput" data-i18n-placeholder="modal_frequency_placeholder" placeholder="เช่น 3 ครั้ง/สัปดาห์" />
+        <input type="text" id="frequencyInput" data-i18n-placeholder="modal_frequency_placeholder" placeholder="เช่น ครั้งละ 24 ลบ.ม./ไร่ ทุก 12 วัน" />
+      </div>
+      <div class="field">
+        <label data-i18n="modal_schedule_label">ตารางให้น้ำรายสัปดาห์</label>
+        <textarea id="scheduleInput" rows="2"></textarea>
+      </div>
+      <div class="field">
+        <label data-i18n="modal_source_label">แหล่งอ้างอิงข้อมูล</label>
+        <textarea id="sourceInput" rows="2"></textarea>
       </div>
       <div class="modal-actions">
         <button type="button" class="btn-secondary" id="cancelModalBtn" data-i18n="modal_cancel">ยกเลิก</button>

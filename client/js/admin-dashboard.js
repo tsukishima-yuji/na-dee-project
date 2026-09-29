@@ -7,6 +7,24 @@
 let editingScenarioId = null; // null = "Add" mode, a number = "Edit" mode
 let deletingScenarioId = null;
 
+// [input element id, scenario field] — same order as the modal
+const FORM_FIELDS = [
+  ["nameThInput", "name_th"],
+  ["nameEnInput", "name_en"],
+  ["descriptionInput", "description"],
+  ["provinceInput", "province"],
+  ["varietyInput", "variety"],
+  ["plantingInput", "planting_season"],
+  ["irrigationInput", "irrigation_type"],
+  ["yieldInput", "predicted_yield"],
+  ["waterInput", "water_allocation_week"],
+  ["wueInput", "water_use_efficiency"],
+  ["nFertilizerInput", "n_fertilizer"],
+  ["frequencyInput", "irrigation_frequency"],
+  ["scheduleInput", "weekly_schedule"],
+  ["sourceInput", "source"],
+];
+
 document.addEventListener("DOMContentLoaded", async () => {
   // ---- Auth guard: only signed-in admins may see this page ----
   if (!isAdminLoggedIn()) {
@@ -45,8 +63,14 @@ function renderSummary(scenarios) {
   document.getElementById("summaryScenarioCount").textContent = scenarios.length;
   document.getElementById("summaryProvinceCount").textContent =
     new Set(scenarios.map((s) => s.province)).size;
-  document.getElementById("summaryCropCount").textContent =
-    new Set(scenarios.map((s) => nameFor(s))).size;
+  document.getElementById("summaryCropCount").textContent = new Set(
+    scenarios.flatMap((s) =>
+      String(s.variety || "")
+        .split(",")
+        .map((v) => v.trim())
+        .filter((v) => v && !/^[a-z]/i.test(v)) // count Thai names only, skip English aliases
+    )
+  ).size;
 }
 
 function nameFor(scenario) {
@@ -58,7 +82,10 @@ function renderScenarioList(scenarios) {
   listEl.innerHTML = "";
 
   if (scenarios.length === 0) {
-    listEl.innerHTML = `<p class="empty-state">${t("admin_empty")}</p>`;
+    listEl.innerHTML = `
+      <p class="empty-state">${t("admin_empty")}</p>
+      <button type="button" class="btn-primary seed-btn" id="seedBtn">${t("admin_seed_btn")}</button>`;
+    document.getElementById("seedBtn").addEventListener("click", handleSeed);
     return;
   }
 
@@ -68,7 +95,7 @@ function renderScenarioList(scenarios) {
     card.innerHTML = `
       <div>
         <div class="scenario-name">${escapeHtml(nameFor(scenario))}</div>
-        <div class="scenario-sub">${escapeHtml(provinceLabel(scenario.province))} · ${escapeHtml(scenario.irrigation_frequency || "-")}</div>
+        <div class="scenario-sub">${escapeHtml(provinceLabel(scenario.province))} · ${escapeHtml(irrigationLabel(scenario.irrigation_type))} · ${escapeHtml(formatNum(scenario.predicted_yield))} ${t("unit_ton_rai")}</div>
       </div>
       <div class="scenario-card-actions">
         <button class="icon-btn edit" data-id="${scenario.scenario_id}" aria-label="edit">✎</button>
@@ -100,10 +127,9 @@ async function openScenarioModal(scenarioId) {
     const scenarios = await getScenarios();
     const scenario = scenarios.find((s) => s.scenario_id === scenarioId);
     if (scenario) {
-      document.getElementById("nameThInput").value = scenario.name_th || "";
-      document.getElementById("provinceInput").value = scenario.province || "";
-      document.getElementById("waterInput").value = scenario.water_allocation_week ?? "";
-      document.getElementById("frequencyInput").value = scenario.irrigation_frequency || "";
+      FORM_FIELDS.forEach(([inputId, key]) => {
+        document.getElementById(inputId).value = scenario[key] ?? "";
+      });
     }
   }
   document.getElementById("scenarioModalOverlay").classList.remove("hidden");
@@ -116,12 +142,10 @@ function closeScenarioModal() {
 
 async function handleScenarioFormSubmit(event) {
   event.preventDefault();
-  const data = {
-    name_th: document.getElementById("nameThInput").value.trim(),
-    province: document.getElementById("provinceInput").value.trim(),
-    water_allocation_week: Number(document.getElementById("waterInput").value) || 0,
-    irrigation_frequency: document.getElementById("frequencyInput").value.trim(),
-  };
+  const data = {};
+  FORM_FIELDS.forEach(([inputId, key]) => {
+    data[key] = document.getElementById(inputId).value.trim();
+  });
   if (!data.name_th || !data.province) {
     showToast(t("toast_error"));
     return;
@@ -173,6 +197,30 @@ async function handleConfirmDelete() {
 function provinceLabel(code) {
   const keys = { khon_kaen: "form_province_kk", udon_thani: "form_province_ud" };
   return keys[code] ? t(keys[code]) : code;
+}
+
+function irrigationLabel(code) {
+  const keys = { rain_fed: "irrigation_short_rain", system: "irrigation_short_system" };
+  return keys[code] ? t(keys[code]) : "-";
+}
+
+function formatNum(n) {
+  return n || n === 0 ? String(n) : "-";
+}
+
+/* ---------------- Load research dataset ---------------- */
+
+async function handleSeed() {
+  const btn = document.getElementById("seedBtn");
+  btn.disabled = true;
+  try {
+    await seedScenarios(); // api.js
+    showToast(t("toast_seeded"));
+    await renderDashboard();
+  } catch (err) {
+    showToast(t("toast_error"));
+    btn.disabled = false;
+  }
 }
 /* ---------------- helpers ---------------- */
 

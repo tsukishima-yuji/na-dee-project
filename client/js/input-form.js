@@ -37,10 +37,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const submitBtn = document.getElementById("submitBtn");
     submitBtn.disabled = true;
     try {
-      await submitFarmerInput(formData); // defined in api.js
-      showToast(t("form_submitted_toast"));
-     
-      setTimeout(() => (window.location.href = "index.html"), 900);
+      const result = await submitFarmerInput(formData); // defined in api.js -> POST /api/match
+      // result.html / compare.html read this back (best match + all ranked scenarios)
+      sessionStorage.setItem("nadee_match_result", JSON.stringify(result));
+
+      const best = result.best;
+      const name = getLang() === "th" ? best.name_th : best.name_en || best.name_th;
+      showToast(`${name} · ${best.match_percent}%`);
+
+      // TODO: switch to "result.html" once the result page is built
+      setTimeout(() => (window.location.href = "index.html"), 1500);
     } catch (err) {
       showToast(t("toast_error"));
       submitBtn.disabled = false;

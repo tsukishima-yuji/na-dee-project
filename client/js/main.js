@@ -54,15 +54,23 @@ const TRANSLATIONS = {
     admin_logout: "ออกจากระบบ", admin_empty: "ยังไม่มี Scenario กรุณาเพิ่มรายการใหม่",
     modal_add_title: "เพิ่ม Scenario ใหม่", modal_edit_title: "แก้ไข Scenario",
     modal_name_label: "ชื่อ Scenario", modal_name_placeholder: "เช่น เกษตรกรรายย่อย — พึ่งน้ำฝน",
-    modal_water_label: "ปริมาณน้ำที่แนะนำ (ลบ.ม./สัปดาห์)", modal_water_placeholder: "เช่น 900",
-    modal_frequency_label: "ความถี่การให้น้ำ", modal_frequency_placeholder: "เช่น 3 ครั้ง/สัปดาห์",
+    modal_water_label: "น้ำ (ลบ.ม./ไร่/สัปดาห์)", modal_water_placeholder: "เช่น 14",
+    modal_frequency_label: "ความถี่การให้น้ำ", modal_frequency_placeholder: "เช่น ครั้งละ 24 ลบ.ม./ไร่ ทุก 12 วัน",
     modal_province_label: "จังหวัด",
     modal_cancel: "ยกเลิก", modal_save: "บันทึก",
     modal_delete_title: "ยืนยันการลบ Scenario",
     modal_delete_body_prefix: 'การลบไม่สามารถย้อนกลับได้ ต้องการลบ "', modal_delete_body_suffix: '" ใช่หรือไม่?',
     modal_delete_confirm: "ลบ Scenario",
     toast_added: "เพิ่ม Scenario เรียบร้อยแล้ว", toast_updated: "บันทึกการแก้ไขเรียบร้อยแล้ว",
-    toast_deleted: "ลบ Scenario เรียบร้อยแล้ว", toast_error: "เกิดข้อผิดพลาด กรุณาลองใหม่"
+    toast_deleted: "ลบ Scenario เรียบร้อยแล้ว", toast_error: "เกิดข้อผิดพลาด กรุณาลองใหม่",
+    // --- scenario schema / matching ---
+    modal_section_info: "ข้อมูลทั่วไป", modal_section_match: "เงื่อนไขการจับคู่", modal_section_output: "ผลลัพธ์ / คำแนะนำ",
+    modal_name_en_label: "ชื่อภาษาอังกฤษ", modal_description_label: "คำอธิบาย",
+    modal_variety_label: "พันธุ์ (คั่นด้วย , )", modal_yield_label: "ผลผลิต (ตัน/ไร่)",
+    modal_wue_label: "WUE (กก./ลบ.ม.)", modal_n_label: "ปุ๋ยไนโตรเจน",
+    modal_schedule_label: "ตารางให้น้ำรายสัปดาห์", modal_source_label: "แหล่งอ้างอิงข้อมูล",
+    admin_seed_btn: "โหลดข้อมูลจากงานวิจัย (8 Scenario)", toast_seeded: "โหลดข้อมูล Scenario เรียบร้อยแล้ว",
+    irrigation_short_rain: "พึ่งน้ำฝน", irrigation_short_system: "ให้น้ำ", unit_ton_rai: "ตัน/ไร่"
   },
   en: {
     brand: "Na-Dee", role_farmer: "Farmer", admin_btn: "Admin",
@@ -96,15 +104,23 @@ const TRANSLATIONS = {
     admin_logout: "Log out", admin_empty: "No scenarios yet. Add a new one to get started.",
     modal_add_title: "Add new scenario", modal_edit_title: "Edit scenario",
     modal_name_label: "Scenario name", modal_name_placeholder: "e.g. Smallholder farmer — rain-fed",
-    modal_water_label: "Recommended water (m3/week)", modal_water_placeholder: "e.g. 900",
-    modal_frequency_label: "Irrigation frequency", modal_frequency_placeholder: "e.g. 3 times/week",
+    modal_water_label: "Water (m³/rai/week)", modal_water_placeholder: "e.g. 14",
+    modal_frequency_label: "Irrigation frequency", modal_frequency_placeholder: "e.g. 24 m³/rai every 12 days",
     modal_province_label: "Province",
     modal_cancel: "Cancel", modal_save: "Save",
     modal_delete_title: "Confirm delete scenario",
     modal_delete_body_prefix: 'This cannot be undone. Delete "', modal_delete_body_suffix: '"?',
     modal_delete_confirm: "Delete scenario",
     toast_added: "Scenario added", toast_updated: "Changes saved",
-    toast_deleted: "Scenario deleted", toast_error: "Something went wrong, please try again"
+    toast_deleted: "Scenario deleted", toast_error: "Something went wrong, please try again",
+    // --- scenario schema / matching ---
+    modal_section_info: "General info", modal_section_match: "Matching conditions", modal_section_output: "Outputs / recommendation",
+    modal_name_en_label: "English name", modal_description_label: "Description",
+    modal_variety_label: "Varieties (comma-separated)", modal_yield_label: "Yield (t/rai)",
+    modal_wue_label: "WUE (kg/m³)", modal_n_label: "Nitrogen fertilizer",
+    modal_schedule_label: "Weekly irrigation schedule", modal_source_label: "Data source / reference",
+    admin_seed_btn: "Load research dataset (8 scenarios)", toast_seeded: "Scenario dataset loaded",
+    irrigation_short_rain: "Rain-fed", irrigation_short_system: "Irrigated", unit_ton_rai: "t/rai"
   }
 };
 
