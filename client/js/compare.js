@@ -95,9 +95,9 @@ function renderPage() {
         <thead>
           <tr>
             <th>Scenario</th>
-            <th>${t("compare_metric_yield")}<small>${t("unit_ton_rai")}</small></th>
-            <th>${t("compare_metric_water")}<small>${t("unit_m3_rai_week")}</small></th>
-            <th>WUE<small>${t("unit_kg_m3")}</small></th>
+            <th>${t("compare_metric_yield")}</th>
+            <th>${t("compare_metric_water")}</th>
+            <th>WUE</th>
             <th>${t("result_fertilizer")}</th>
             <th>${t("result_frequency")}</th>
           </tr>
@@ -107,12 +107,12 @@ function renderPage() {
             .map(
               (s) => `
             <tr class="${s.scenario_id === bestId ? "is-best" : ""}">
-              <td class="name-cell">${escapeHtml(scenarioName(s))}</td>
-              <td>${fmt(s.predicted_yield)}</td>
-              <td>${fmt(s.water_allocation_week)}</td>
-              <td>${fmt(s.water_use_efficiency)}</td>
-              <td>${escapeHtml(s.n_fertilizer || "-")}</td>
-              <td>${escapeHtml(s.irrigation_frequency || "-")}</td>
+              <td class="name-cell">${escapeHtml(scenarioName(s))}${s.scenario_id === bestId ? ` <span class="best-tag">${t("compare_your_match")}</span>` : ""}</td>
+              <td class="num-cell" data-label="${t("compare_metric_yield")}"><b>${fmt(s.predicted_yield)}</b> <small>${t("unit_ton_rai")}</small></td>
+              <td class="num-cell" data-label="${t("compare_metric_water")}"><b>${fmt(s.water_allocation_week)}</b> <small>${t("unit_m3_rai_week")}</small></td>
+              <td class="num-cell" data-label="WUE"><b>${fmt(s.water_use_efficiency)}</b> <small>${t("unit_kg_m3")}</small></td>
+              <td class="text-cell" data-label="${t("result_fertilizer")}">${escapeHtml(s.n_fertilizer || "-")}</td>
+              <td class="text-cell" data-label="${t("result_frequency")}">${escapeHtml(s.irrigation_frequency || "-")}</td>
             </tr>`
             )
             .join("")}

@@ -34,7 +34,7 @@ const TRANSLATIONS = {
     scenario_2_name: "เพิ่มผลผลิตตามคำแนะนำ", scenario_2_sub: "ใช้น้ำอย่างมีประสิทธิภาพ", scenario_2_badge: "ผลผลิตปานกลาง-สูง",
     scenario_3_name: "เพิ่มผลผลิตสูงสุด", scenario_3_sub: "จัดการครบวงจร", scenario_3_badge: "ผลผลิตสูง",
     scenario_4_name: "เตรียมรับสภาพอากาศแปรปรวน", scenario_4_sub: "พันธุ์ทนแล้ง · Climate resilient", scenario_4_badge: "มั่นคงในอนาคต",
-    nav_home: "หน้าแรก", nav_input: "กรอกข้อมูล", nav_compare: "เปรียบเทียบ", nav_admin: "รายงาน",
+    nav_home: "หน้าแรก", nav_input: "กรอกข้อมูล", nav_compare: "เปรียบเทียบ", nav_admin: "ผลลัพธ์",
     form_title: "ข้อมูลแปลงของคุณ", form_province: "จังหวัด",
     form_province_kk: "ขอนแก่น", form_province_ud: "อุดรธานี",
     form_variety: "พันธุ์มันสำปะหลัง", form_variety_placeholder: "เกษตรศาสตร์ 50",
@@ -84,7 +84,16 @@ const TRANSLATIONS = {
     compare_loading: "กำลังโหลดข้อมูล...", compare_empty: "ยังไม่มี Scenario ของจังหวัดนี้",
     compare_chart_title: "กราฟเปรียบเทียบ", compare_table_title: "ตารางเปรียบเทียบ",
     compare_metric_yield: "ผลผลิต", compare_metric_water: "น้ำ/สัปดาห์", compare_metric_wue: "WUE",
-    compare_your_match: "ของคุณ", compare_note: "WUE = ผลผลิตต่อปริมาณน้ำที่ใช้ทั้งหมด ยิ่งสูงยิ่งใช้น้ำคุ้มค่า"
+    compare_your_match: "ของคุณ",
+    weather_title: "ปรับตามสภาพอากาศ 7 วันข้างหน้า", weather_loading: "กำลังดึงพยากรณ์อากาศ...",
+    weather_error: "ดึงพยากรณ์อากาศไม่ได้ในขณะนี้ ใช้ปริมาณน้ำตามข้อมูลงานวิจัยด้านบนแทน",
+    weather_rain_caption: "ปริมาณฝนพยากรณ์รายวัน (มม.) และอุณหภูมิสูงสุด",
+    weather_rain: "ฝน 7 วัน", weather_need: "พืชต้องการน้ำ", weather_cover: "ฝนช่วยได้",
+    weather_advice_prefix: "สัปดาห์นี้ให้น้ำ", weather_total: "ทั้งแปลง",
+    weather_advice_skip: "ฝนเพียงพอแล้ว <b>สัปดาห์นี้งดให้น้ำได้</b>",
+    weather_advice_rainfed: "แนวทางนี้อาศัยน้ำฝน ใช้พยากรณ์ช่วยวางแผนงานในแปลง",
+    weather_saved: "ประหยัดน้ำได้", weather_source: "ข้อมูลอากาศ: Open-Meteo API · คำนวณแบบ FAO-56 (Kc = 0.8)",
+    unit_mm: "มม.", unit_m3: "ลบ.ม.", compare_note: "WUE = ผลผลิตต่อปริมาณน้ำที่ใช้ทั้งหมด ยิ่งสูงยิ่งใช้น้ำคุ้มค่า"
   },
   en: {
     brand: "Na-Dee", role_farmer: "Farmer", admin_btn: "Admin",
@@ -98,7 +107,7 @@ const TRANSLATIONS = {
     scenario_2_name: "Boost yield with guidance", scenario_2_sub: "Efficient water use", scenario_2_badge: "Medium-high yield",
     scenario_3_name: "Maximize yield", scenario_3_sub: "Full management", scenario_3_badge: "High yield",
     scenario_4_name: "Climate resilience prep", scenario_4_sub: "Drought-tolerant · climate resilient", scenario_4_badge: "Future-proof",
-    nav_home: "Home", nav_input: "Input form", nav_compare: "Compare", nav_admin: "Report",
+    nav_home: "Home", nav_input: "Input form", nav_compare: "Compare", nav_admin: "Result",
     form_title: "Your field information", form_province: "Province",
     form_province_kk: "Khon Kaen", form_province_ud: "Udon Thani",
     form_variety: "Cassava variety", form_variety_placeholder: "Kasetsart 50",
@@ -148,7 +157,16 @@ const TRANSLATIONS = {
     compare_loading: "Loading...", compare_empty: "No scenarios for this province yet",
     compare_chart_title: "Comparison chart", compare_table_title: "Comparison table",
     compare_metric_yield: "Yield", compare_metric_water: "Water/week", compare_metric_wue: "WUE",
-    compare_your_match: "Yours", compare_note: "WUE = yield per unit of total water used; higher means more yield per drop"
+    compare_your_match: "Yours",
+    weather_title: "Adjusted to the next 7 days of weather", weather_loading: "Loading weather forecast...",
+    weather_error: "Can't load the weather forecast right now. Use the research-based water amount above.",
+    weather_rain_caption: "Daily forecast rain (mm) and max temperature",
+    weather_rain: "Rain (7 days)", weather_need: "Crop water need", weather_cover: "Rain covers",
+    weather_advice_prefix: "This week, irrigate", weather_total: "whole field",
+    weather_advice_skip: "Rain is enough — <b>you can skip irrigation this week</b>",
+    weather_advice_rainfed: "This approach is rain-fed. Use the forecast to plan field work.",
+    weather_saved: "Water saved:", weather_source: "Weather: Open-Meteo API · FAO-56 method (Kc = 0.8)",
+    unit_mm: "mm", unit_m3: "m³", compare_note: "WUE = yield per unit of total water used; higher means more yield per drop"
   }
 };
 
