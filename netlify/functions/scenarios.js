@@ -10,7 +10,7 @@
    scenario_id. Field list lives in netlify/lib/scenario-schema.js
    ========================================================= */
 
-const { getStore, connectLambda } = require("@netlify/blobs");
+const { openStore } = require("../lib/blob-store");
 const { sanitizeScenario } = require("../lib/scenario-schema");
 const SEED_SCENARIOS = require("../data/seed-scenarios.json");
 
@@ -21,11 +21,15 @@ function json(statusCode, body) {
 }
 
 function getStoreInstance(event) {
-  connectLambda(event);
-  return getStore(STORE_NAME, {
-    siteID: process.env.NETLIFY_SITE_ID,
-    token: process.env.NETLIFY_AUTH_TOKEN,
-  });
+  return openStore(STORE_NAME, event);
+}
+
+/** Scenario id from ?id=123, or from the path /api/scenarios/123 (live Netlify keeps the original path) */
+function getId(event) {
+  const query = event.queryStringParameters || {};
+  if (query.id) return String(query.id);
+  const m = String(event.path || event.rawUrl || "").match(/scenarios\/(\d+)/);
+  return m ? m[1] : null;
 }
 
 async function listScenarios(store) {
@@ -45,7 +49,7 @@ function parseBody(event) {
 exports.handler = async (event) => {
   const store = getStoreInstance(event);
   const query = event.queryStringParameters || {};
-  const id = query.id;
+  const id = getId(event);
 
   try {
     switch (event.httpMethod) {

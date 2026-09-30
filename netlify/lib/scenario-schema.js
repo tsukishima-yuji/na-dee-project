@@ -24,6 +24,13 @@ const SCENARIO_FIELDS = {
   n_fertilizer:          { type: "text" },
   weekly_schedule:       { type: "text" },
   source:                { type: "text" },   // reference for the numbers
+
+  // --- English / Thai versions of the text fields (shown when the user switches language) ---
+  description_en:          { type: "text" },
+  irrigation_frequency_en: { type: "text" },
+  weekly_schedule_en:      { type: "text" },
+  n_fertilizer_en:         { type: "text" },
+  source_th:               { type: "text" },
 };
 
 /**

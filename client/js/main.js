@@ -23,17 +23,17 @@
 
 const TRANSLATIONS = {
   th: {
-    brand: "นาดี", role_farmer: "เกษตรกร", admin_btn: "Admin",
+    brand: "นาดี", role_farmer: "เกษตรกร", admin_btn: "ผู้ดูแล",
     home_eyebrow: "ขอนแก่น · อุดรธานี",
     home_title: "เลือกแนวทางการจัดการน้ำสำหรับมันสำปะหลังของคุณ",
     home_desc: "เลือกจังหวัด พันธุ์ วันที่ปลูก และวิธีการให้น้ำ ระบบจะจับคู่กับสถานการณ์ที่ใกล้เคียงที่สุด และคาดการณ์ผลผลิตให้ทันที",
     home_cta: "เริ่มกรอกข้อมูล",
-    stat_scenarios: "Scenario หลัก", stat_provinces: "พื้นที่รับ", stat_areas: "จังหวัด",
+    stat_scenarios: "แนวทางหลัก", stat_provinces: "พื้นที่รับ", stat_areas: "จังหวัด",
     home_section_title: "4 แนวทางการจัดการหลัก",
     scenario_1_name: "เกษตรกรรายย่อย", scenario_1_sub: "ต้นทุนต่ำ · พึ่งน้ำฝน", scenario_1_badge: "ผลผลิตปานกลาง-ต่ำ",
     scenario_2_name: "เพิ่มผลผลิตตามคำแนะนำ", scenario_2_sub: "ใช้น้ำอย่างมีประสิทธิภาพ", scenario_2_badge: "ผลผลิตปานกลาง-สูง",
     scenario_3_name: "เพิ่มผลผลิตสูงสุด", scenario_3_sub: "จัดการครบวงจร", scenario_3_badge: "ผลผลิตสูง",
-    scenario_4_name: "เตรียมรับสภาพอากาศแปรปรวน", scenario_4_sub: "พันธุ์ทนแล้ง · Climate resilient", scenario_4_badge: "มั่นคงในอนาคต",
+    scenario_4_name: "เตรียมรับสภาพอากาศแปรปรวน", scenario_4_sub: "พันธุ์ทนแล้ง · รับมืออากาศแปรปรวน", scenario_4_badge: "มั่นคงในอนาคต",
     nav_home: "หน้าแรก", nav_input: "กรอกข้อมูล", nav_compare: "เปรียบเทียบ", nav_admin: "ผลลัพธ์",
     form_title: "ข้อมูลแปลงของคุณ", form_province: "จังหวัด",
     form_province_kk: "ขอนแก่น", form_province_ud: "อุดรธานี",
@@ -48,28 +48,34 @@ const TRANSLATIONS = {
     login_title: "เข้าสู่ระบบผู้ดูแล", login_subtitle: "สำหรับผู้จัดการข้อมูล",
     login_email: "อีเมล", login_password: "รหัสผ่าน", login_button: "เข้าสู่ระบบ",
     login_error: "อีเมลหรือรหัสผ่านไม่ถูกต้อง", login_back: "กลับหน้าแรก",
-    admin_all_scenarios: "Scenario ทั้งหมด", admin_add: "เพิ่ม",
-    admin_summary_title: "สรุประบบ", admin_summary_scenario: "Scenario",
+    admin_all_scenarios: "แนวทางทั้งหมด", admin_add: "เพิ่ม",
+    admin_summary_title: "สรุประบบ", admin_summary_scenario: "แนวทาง",
     admin_summary_province: "จังหวัด", admin_summary_crop: "พันธุ์",
-    admin_logout: "ออกจากระบบ", admin_empty: "ยังไม่มี Scenario กรุณาเพิ่มรายการใหม่",
-    modal_add_title: "เพิ่ม Scenario ใหม่", modal_edit_title: "แก้ไข Scenario",
-    modal_name_label: "ชื่อ Scenario", modal_name_placeholder: "เช่น เกษตรกรรายย่อย — พึ่งน้ำฝน",
+    admin_logout: "ออกจากระบบ", admin_empty: "ยังไม่มีแนวทาง กรุณาเพิ่มรายการใหม่",
+    modal_add_title: "เพิ่มแนวทางใหม่", modal_edit_title: "แก้ไขแนวทาง",
+    modal_name_label: "ชื่อแนวทาง", modal_name_placeholder: "เช่น เกษตรกรรายย่อย — พึ่งน้ำฝน",
     modal_water_label: "น้ำ (ลบ.ม./ไร่/สัปดาห์)", modal_water_placeholder: "เช่น 14",
-    modal_frequency_label: "ความถี่การให้น้ำ", modal_frequency_placeholder: "เช่น ครั้งละ 24 ลบ.ม./ไร่ ทุก 12 วัน",
+    modal_frequency_label: "ความถี่การให้น้ำ (ไทย)", modal_frequency_placeholder: "เช่น ครั้งละ 24 ลบ.ม./ไร่ ทุก 12 วัน",
     modal_province_label: "จังหวัด",
     modal_cancel: "ยกเลิก", modal_save: "บันทึก",
-    modal_delete_title: "ยืนยันการลบ Scenario",
+    modal_delete_title: "ยืนยันการลบแนวทาง",
     modal_delete_body_prefix: 'การลบไม่สามารถย้อนกลับได้ ต้องการลบ "', modal_delete_body_suffix: '" ใช่หรือไม่?',
-    modal_delete_confirm: "ลบ Scenario",
-    toast_added: "เพิ่ม Scenario เรียบร้อยแล้ว", toast_updated: "บันทึกการแก้ไขเรียบร้อยแล้ว",
-    toast_deleted: "ลบ Scenario เรียบร้อยแล้ว", toast_error: "เกิดข้อผิดพลาด กรุณาลองใหม่",
+    modal_delete_confirm: "ลบแนวทาง",
+    toast_added: "เพิ่มแนวทางเรียบร้อยแล้ว", toast_updated: "บันทึกการแก้ไขเรียบร้อยแล้ว",
+    toast_deleted: "ลบแนวทางเรียบร้อยแล้ว", toast_error: "เกิดข้อผิดพลาด กรุณาลองใหม่",
     // --- scenario schema / matching ---
     modal_section_info: "ข้อมูลทั่วไป", modal_section_match: "เงื่อนไขการจับคู่", modal_section_output: "ผลลัพธ์ / คำแนะนำ",
-    modal_name_en_label: "ชื่อภาษาอังกฤษ", modal_description_label: "คำอธิบาย",
+    modal_name_en_label: "ชื่อภาษาอังกฤษ", modal_description_label: "คำอธิบาย (ไทย)",
     modal_variety_label: "พันธุ์ (คั่นด้วย , )", modal_yield_label: "ผลผลิต (ตัน/ไร่)",
-    modal_wue_label: "WUE (กก./ลบ.ม.)", modal_n_label: "ปุ๋ยไนโตรเจน",
-    modal_schedule_label: "ตารางให้น้ำรายสัปดาห์", modal_source_label: "แหล่งอ้างอิงข้อมูล",
-    admin_seed_btn: "โหลดข้อมูลจากงานวิจัย (8 Scenario)", toast_seeded: "โหลดข้อมูล Scenario เรียบร้อยแล้ว",
+    modal_wue_label: "ประสิทธิภาพการใช้น้ำ (กก./ลบ.ม.)", modal_n_label: "ปุ๋ยไนโตรเจน (ไทย)",
+    modal_schedule_label: "ตารางให้น้ำ (ไทย)", modal_source_label: "แหล่งอ้างอิงข้อมูล (อังกฤษ)",
+    modal_section_lang: "ข้อความภาษาอังกฤษ (แสดงเมื่อสลับเป็น EN)",
+    modal_description_en_label: "คำอธิบาย (อังกฤษ)", modal_frequency_en_label: "ความถี่การให้น้ำ (อังกฤษ)",
+    modal_schedule_en_label: "ตารางให้น้ำ (อังกฤษ)", modal_n_en_label: "ปุ๋ยไนโตรเจน (อังกฤษ)",
+    modal_source_th_label: "แหล่งอ้างอิงข้อมูล (ไทย)",
+    modal_name_en_placeholder: "เช่น Smallholder — Rain-fed", modal_variety_placeholder: "ห้วยบง 80, ระยอง 11, Huay Bong 80",
+    modal_n_placeholder: "14.4 กก.ไนโตรเจน/ไร่",
+    admin_seed_btn: "โหลดข้อมูลจากงานวิจัย (8 แนวทาง)", toast_seeded: "โหลดข้อมูลแนวทางเรียบร้อยแล้ว",
     irrigation_short_rain: "พึ่งน้ำฝน", irrigation_short_system: "ให้น้ำ", unit_ton_rai: "ตัน/ไร่",
     // --- result / compare pages ---
     unit_rai: "ไร่", unit_m3_rai_week: "ลบ.ม./ไร่/สัปดาห์", unit_kg_m3: "กก./ลบ.ม.",
@@ -79,11 +85,11 @@ const TRANSLATIONS = {
     result_advice_title: "คำแนะนำการจัดการน้ำ", result_frequency: "ความถี่การให้น้ำ", result_schedule: "ตารางให้น้ำ",
     result_fertilizer: "ปุ๋ยไนโตรเจน", result_variety: "พันธุ์ที่ใช้ในข้อมูลอ้างอิง",
     result_why_title: "ทำไมถึงได้แนวทางนี้", result_other_title: "แนวทางอื่นในจังหวัดเดียวกัน",
-    result_source: "แหล่งข้อมูล", result_compare_btn: "เปรียบเทียบทุก Scenario", result_again_btn: "กรอกข้อมูลใหม่",
-    compare_title: "เปรียบเทียบ Scenario", compare_desc: "เทียบผลผลิตและการใช้น้ำของทุกแนวทางในจังหวัดเดียวกัน",
-    compare_loading: "กำลังโหลดข้อมูล...", compare_empty: "ยังไม่มี Scenario ของจังหวัดนี้",
+    result_source: "แหล่งข้อมูล", result_compare_btn: "เปรียบเทียบทุกแนวทาง", result_again_btn: "กรอกข้อมูลใหม่",
+    compare_title: "เปรียบเทียบแนวทาง", compare_desc: "เทียบผลผลิตและการใช้น้ำของทุกแนวทางในจังหวัดเดียวกัน",
+    compare_loading: "กำลังโหลดข้อมูล...", compare_empty: "ยังไม่มีแนวทางของจังหวัดนี้",
     compare_chart_title: "กราฟเปรียบเทียบ", compare_table_title: "ตารางเปรียบเทียบ",
-    compare_metric_yield: "ผลผลิต", compare_metric_water: "น้ำ/สัปดาห์", compare_metric_wue: "WUE",
+    compare_metric_yield: "ผลผลิต", compare_metric_water: "น้ำ/สัปดาห์", compare_metric_wue: "ประสิทธิภาพน้ำ", compare_col_scenario: "แนวทาง",
     compare_your_match: "ของคุณ",
     weather_title: "ปรับตามสภาพอากาศ 7 วันข้างหน้า", weather_loading: "กำลังดึงพยากรณ์อากาศ...",
     weather_error: "ดึงพยากรณ์อากาศไม่ได้ในขณะนี้ ใช้ปริมาณน้ำตามข้อมูลงานวิจัยด้านบนแทน",
@@ -92,8 +98,8 @@ const TRANSLATIONS = {
     weather_advice_prefix: "สัปดาห์นี้ให้น้ำ", weather_total: "ทั้งแปลง",
     weather_advice_skip: "ฝนเพียงพอแล้ว <b>สัปดาห์นี้งดให้น้ำได้</b>",
     weather_advice_rainfed: "แนวทางนี้อาศัยน้ำฝน ใช้พยากรณ์ช่วยวางแผนงานในแปลง",
-    weather_saved: "ประหยัดน้ำได้", weather_source: "ข้อมูลอากาศ: Open-Meteo API · คำนวณแบบ FAO-56 (Kc = 0.8)",
-    unit_mm: "มม.", unit_m3: "ลบ.ม.", compare_note: "WUE = ผลผลิตต่อปริมาณน้ำที่ใช้ทั้งหมด ยิ่งสูงยิ่งใช้น้ำคุ้มค่า"
+    weather_saved: "ประหยัดน้ำได้", weather_source: "ข้อมูลอากาศจาก Open-Meteo · คำนวณตามวิธีของ FAO (ค่าสัมประสิทธิ์พืช 0.8)",
+    unit_mm: "มม.", unit_m3: "ลบ.ม.", compare_note: "ประสิทธิภาพน้ำ = ผลผลิตต่อปริมาณน้ำที่ใช้ทั้งหมด ยิ่งสูงยิ่งใช้น้ำคุ้มค่า"
   },
   en: {
     brand: "Na-Dee", role_farmer: "Farmer", admin_btn: "Admin",
@@ -128,7 +134,7 @@ const TRANSLATIONS = {
     modal_add_title: "Add new scenario", modal_edit_title: "Edit scenario",
     modal_name_label: "Scenario name", modal_name_placeholder: "e.g. Smallholder farmer — rain-fed",
     modal_water_label: "Water (m³/rai/week)", modal_water_placeholder: "e.g. 14",
-    modal_frequency_label: "Irrigation frequency", modal_frequency_placeholder: "e.g. 24 m³/rai every 12 days",
+    modal_frequency_label: "Irrigation frequency (Thai)", modal_frequency_placeholder: "e.g. 24 m³/rai every 12 days",
     modal_province_label: "Province",
     modal_cancel: "Cancel", modal_save: "Save",
     modal_delete_title: "Confirm delete scenario",
@@ -138,10 +144,16 @@ const TRANSLATIONS = {
     toast_deleted: "Scenario deleted", toast_error: "Something went wrong, please try again",
     // --- scenario schema / matching ---
     modal_section_info: "General info", modal_section_match: "Matching conditions", modal_section_output: "Outputs / recommendation",
-    modal_name_en_label: "English name", modal_description_label: "Description",
+    modal_name_en_label: "English name", modal_description_label: "Description (Thai)",
     modal_variety_label: "Varieties (comma-separated)", modal_yield_label: "Yield (t/rai)",
-    modal_wue_label: "WUE (kg/m³)", modal_n_label: "Nitrogen fertilizer",
-    modal_schedule_label: "Weekly irrigation schedule", modal_source_label: "Data source / reference",
+    modal_wue_label: "WUE (kg/m³)", modal_n_label: "Nitrogen fertilizer (Thai)",
+    modal_schedule_label: "Irrigation schedule (Thai)", modal_source_label: "Data source (English)",
+    modal_section_lang: "English text (shown in EN mode)",
+    modal_description_en_label: "Description (English)", modal_frequency_en_label: "Irrigation frequency (English)",
+    modal_schedule_en_label: "Irrigation schedule (English)", modal_n_en_label: "Nitrogen fertilizer (English)",
+    modal_source_th_label: "Data source (Thai)",
+    modal_name_en_placeholder: "e.g. Smallholder — Rain-fed", modal_variety_placeholder: "Huay Bong 80, Rayong 11, ห้วยบง 80",
+    modal_n_placeholder: "14.4 kg nitrogen/rai",
     admin_seed_btn: "Load research dataset (8 scenarios)", toast_seeded: "Scenario dataset loaded",
     irrigation_short_rain: "Rain-fed", irrigation_short_system: "Irrigated", unit_ton_rai: "t/rai",
     // --- result / compare pages ---
@@ -156,7 +168,7 @@ const TRANSLATIONS = {
     compare_title: "Compare scenarios", compare_desc: "Yield and water use of every approach in the same province",
     compare_loading: "Loading...", compare_empty: "No scenarios for this province yet",
     compare_chart_title: "Comparison chart", compare_table_title: "Comparison table",
-    compare_metric_yield: "Yield", compare_metric_water: "Water/week", compare_metric_wue: "WUE",
+    compare_metric_yield: "Yield", compare_metric_water: "Water/week", compare_metric_wue: "WUE", compare_col_scenario: "Scenario",
     compare_your_match: "Yours",
     weather_title: "Adjusted to the next 7 days of weather", weather_loading: "Loading weather forecast...",
     weather_error: "Can't load the weather forecast right now. Use the research-based water amount above.",
@@ -213,6 +225,17 @@ function toggleLanguage() {
   applyLanguage();
   if (typeof renderDashboard === "function") renderDashboard();
   if (typeof renderPage === "function") renderPage(); // result.html / compare.html
+}
+
+/**
+ * Pick the right language version of a scenario text field.
+ * EN: uses key + "_en" when it exists; TH: uses key + "_th" when it exists.
+ * Falls back to the plain field.
+ */
+function localized(obj, key) {
+  if (!obj) return "";
+  const alt = obj[key + (getLang() === "en" ? "_en" : "_th")];
+  return alt !== undefined && alt !== null && String(alt).trim() !== "" ? alt : obj[key];
 }
 
 /** Show a small message at the bottom of the screen for a couple of seconds. */

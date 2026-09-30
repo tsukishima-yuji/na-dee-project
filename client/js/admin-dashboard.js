@@ -23,6 +23,11 @@ const FORM_FIELDS = [
   ["frequencyInput", "irrigation_frequency"],
   ["scheduleInput", "weekly_schedule"],
   ["sourceInput", "source"],
+  ["descriptionEnInput", "description_en"],
+  ["frequencyEnInput", "irrigation_frequency_en"],
+  ["scheduleEnInput", "weekly_schedule_en"],
+  ["nFertilizerEnInput", "n_fertilizer_en"],
+  ["sourceThInput", "source_th"],
 ];
 
 document.addEventListener("DOMContentLoaded", async () => {

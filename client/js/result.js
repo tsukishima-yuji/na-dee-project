@@ -35,7 +35,7 @@ function renderPage() {
           <span>${best.match_percent}%</span>
         </div>
       </div>
-      <p class="hero-desc">${escapeHtml(best.description || "")}</p>
+      <p class="hero-desc">${escapeHtml(localized(best, "description") || "")}</p>
       <div class="input-chips">
         <span>${escapeHtml(labelFor("province", input.province))}</span>
         ${input.variety ? `<span>${escapeHtml(input.variety)}</span>` : ""}
@@ -62,7 +62,7 @@ function renderPage() {
       </div>
       <div class="stat-box">
         <div class="stat-number">${fmt(best.water_use_efficiency)}</div>
-        <div class="stat-label">WUE</div>
+        <div class="stat-label">${t("compare_metric_wue")}</div>
         <div class="stat-sub">${t("unit_kg_m3")}</div>
       </div>
     </section>
@@ -76,10 +76,10 @@ function renderPage() {
     <!-- Irrigation advice -->
     <h2 class="section-title">${t("result_advice_title")}</h2>
     <section class="info-card">
-      ${infoRow("💧", t("result_frequency"), best.irrigation_frequency)}
-      ${infoRow("📅", t("result_schedule"), best.weekly_schedule)}
-      ${infoRow("🌱", t("result_fertilizer"), best.n_fertilizer)}
-      ${infoRow("🌾", t("result_variety"), best.variety)}
+      ${infoRow("💧", t("result_frequency"), localized(best, "irrigation_frequency"))}
+      ${infoRow("📅", t("result_schedule"), localized(best, "weekly_schedule"))}
+      ${infoRow("🌱", t("result_fertilizer"), localized(best, "n_fertilizer"))}
+      ${infoRow("🌾", t("result_variety"), varietyForLang(best.variety))}
     </section>
 
     </div>
@@ -117,7 +117,7 @@ function renderPage() {
     </div>
     </div>
 
-    ${best.source ? `<p class="source-note">${t("result_source")}: ${escapeHtml(best.source)}</p>` : ""}
+    ${best.source ? `<p class="source-note">${t("result_source")}: ${escapeHtml(localized(best, "source"))}</p>` : ""}
 
     <div class="result-actions">
       <a class="btn-primary" href="compare.html">${t("result_compare_btn")}</a>
@@ -193,6 +193,15 @@ async function renderWeather(best, input) {
 }
 
 /* ---------------- helpers ---------------- */
+
+/** "ห้วยบง 80, ระยอง 11, Huay Bong 80, Rayong 11" -> Thai names in TH, English names in EN */
+function varietyForLang(list) {
+  const names = String(list || "").split(",").map((v) => v.trim()).filter(Boolean);
+  const thai = names.filter((v) => /[\u0E00-\u0E7F]/.test(v));
+  const other = names.filter((v) => !/[\u0E00-\u0E7F]/.test(v));
+  const pick = getLang() === "th" ? thai : other;
+  return (pick.length ? pick : names).join(", ");
+}
 
 function readMatchResult() {
   try {

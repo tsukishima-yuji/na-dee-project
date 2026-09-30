@@ -24,7 +24,7 @@
   </header>
 
   <div class="admin-header">
-    <h1 data-i18n="admin_all_scenarios">Scenario ทั้งหมด</h1>
+    <h1 data-i18n="admin_all_scenarios">แนวทางทั้งหมด</h1>
     <button class="btn-add" id="addScenarioBtn">+ <span data-i18n="admin_add">เพิ่ม</span></button>
   </div>
 
@@ -35,7 +35,7 @@
   <section class="stats-row">
     <div class="stat-box">
       <div class="stat-number" id="summaryScenarioCount">0</div>
-      <div class="stat-label" data-i18n="admin_summary_scenario">Scenario</div>
+      <div class="stat-label" data-i18n="admin_summary_scenario">แนวทาง</div>
     </div>
     <div class="stat-box">
       <div class="stat-number" id="summaryProvinceCount">0</div>
@@ -63,17 +63,17 @@
 <!-- ===== Add / Edit scenario modal ===== -->
 <div class="modal-overlay hidden" id="scenarioModalOverlay">
   <div class="modal-sheet">
-    <h2 class="modal-title" id="scenarioModalTitle">เพิ่ม Scenario ใหม่</h2>
+    <h2 class="modal-title" id="scenarioModalTitle">เพิ่มแนวทางใหม่</h2>
     <form id="scenarioForm" novalidate>
       <!-- ---- Basic info ---- -->
       <div class="modal-section" data-i18n="modal_section_info">ข้อมูลทั่วไป</div>
       <div class="field">
-        <label data-i18n="modal_name_label">ชื่อ Scenario</label>
+        <label data-i18n="modal_name_label">ชื่อแนวทาง</label>
         <input type="text" id="nameThInput" data-i18n-placeholder="modal_name_placeholder" placeholder="เช่น เกษตรกรรายย่อย — พึ่งน้ำฝน" required />
       </div>
       <div class="field">
         <label data-i18n="modal_name_en_label">ชื่อภาษาอังกฤษ</label>
-        <input type="text" id="nameEnInput" placeholder="e.g. Smallholder — Rain-fed" />
+        <input type="text" id="nameEnInput" data-i18n-placeholder="modal_name_en_placeholder" placeholder="เช่น Smallholder — Rain-fed" />
       </div>
       <div class="field">
         <label data-i18n="modal_description_label">คำอธิบาย</label>
@@ -91,7 +91,7 @@
       <div class="modal-section" data-i18n="modal_section_match">เงื่อนไขการจับคู่</div>
       <div class="field">
         <label data-i18n="modal_variety_label">พันธุ์ (คั่นด้วย , )</label>
-        <input type="text" id="varietyInput" placeholder="ห้วยบง 80, ระยอง 11" />
+        <input type="text" id="varietyInput" data-i18n-placeholder="modal_variety_placeholder" placeholder="ห้วยบง 80, ระยอง 11, Huay Bong 80" />
       </div>
       <div class="field-row">
         <div class="field">
@@ -124,12 +124,12 @@
       </div>
       <div class="field-row">
         <div class="field">
-          <label data-i18n="modal_wue_label">WUE (กก./ลบ.ม.)</label>
+          <label data-i18n="modal_wue_label">ประสิทธิภาพการใช้น้ำ (กก./ลบ.ม.)</label>
           <input type="number" id="wueInput" min="0" step="0.1" placeholder="7.5" />
         </div>
         <div class="field">
           <label data-i18n="modal_n_label">ปุ๋ยไนโตรเจน</label>
-          <input type="text" id="nFertilizerInput" placeholder="14.4 กก.N/ไร่" />
+          <input type="text" id="nFertilizerInput" data-i18n-placeholder="modal_n_placeholder" placeholder="14.4 กก.ไนโตรเจน/ไร่" />
         </div>
       </div>
       <div class="field">
@@ -141,8 +141,31 @@
         <textarea id="scheduleInput" rows="2"></textarea>
       </div>
       <div class="field">
-        <label data-i18n="modal_source_label">แหล่งอ้างอิงข้อมูล</label>
+        <label data-i18n="modal_source_label">แหล่งอ้างอิงข้อมูล (อังกฤษ)</label>
         <textarea id="sourceInput" rows="2"></textarea>
+      </div>
+
+      <!-- ---- Other-language versions (shown when the user switches language) ---- -->
+      <div class="modal-section" data-i18n="modal_section_lang">ข้อความภาษาอังกฤษ (แสดงเมื่อสลับเป็น EN)</div>
+      <div class="field">
+        <label data-i18n="modal_description_en_label">คำอธิบาย (อังกฤษ)</label>
+        <textarea id="descriptionEnInput" rows="2"></textarea>
+      </div>
+      <div class="field">
+        <label data-i18n="modal_frequency_en_label">ความถี่การให้น้ำ (อังกฤษ)</label>
+        <input type="text" id="frequencyEnInput" placeholder="24 m³/rai about every 12 days" />
+      </div>
+      <div class="field">
+        <label data-i18n="modal_schedule_en_label">ตารางให้น้ำ (อังกฤษ)</label>
+        <textarea id="scheduleEnInput" rows="2"></textarea>
+      </div>
+      <div class="field">
+        <label data-i18n="modal_n_en_label">ปุ๋ยไนโตรเจน (อังกฤษ)</label>
+        <input type="text" id="nFertilizerEnInput" placeholder="14.4 kg nitrogen/rai" />
+      </div>
+      <div class="field">
+        <label data-i18n="modal_source_th_label">แหล่งอ้างอิงข้อมูล (ไทย)</label>
+        <textarea id="sourceThInput" rows="2"></textarea>
       </div>
       <div class="modal-actions">
         <button type="button" class="btn-secondary" id="cancelModalBtn" data-i18n="modal_cancel">ยกเลิก</button>
@@ -155,11 +178,11 @@
 <!-- ===== Delete confirm modal ===== -->
 <div class="modal-overlay hidden" id="deleteModalOverlay">
   <div class="modal-sheet">
-    <h2 class="modal-title" data-i18n="modal_delete_title">ยืนยันการลบ Scenario</h2>
+    <h2 class="modal-title" data-i18n="modal_delete_title">ยืนยันการลบแนวทาง</h2>
     <p id="deleteModalBody" style="color:var(--color-text-muted); font-size:14px; margin-bottom:18px;"></p>
     <div class="modal-actions">
       <button type="button" class="btn-secondary" id="cancelDeleteBtn" data-i18n="modal_cancel">ยกเลิก</button>
-      <button type="button" class="btn-danger" id="confirmDeleteBtn" data-i18n="modal_delete_confirm">ลบ Scenario</button>
+      <button type="button" class="btn-danger" id="confirmDeleteBtn" data-i18n="modal_delete_confirm">ลบแนวทาง</button>
     </div>
   </div>
 </div>

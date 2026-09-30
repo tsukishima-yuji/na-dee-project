@@ -17,7 +17,7 @@
    (InputSubmission entity in the ER diagram).
    ========================================================= */
 
-const { getStore, connectLambda } = require("@netlify/blobs");
+const { openStore } = require("../lib/blob-store");
 
 const WEIGHTS = { province: 40, irrigation_type: 30, planting_season: 20, variety: 10 };
 
@@ -25,11 +25,9 @@ function json(statusCode, body) {
   return { statusCode, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) };
 }
 
+let currentEvent = null;
 function storeFor(name) {
-  return getStore(name, {
-    siteID: process.env.NETLIFY_SITE_ID,
-    token: process.env.NETLIFY_AUTH_TOKEN,
-  });
+  return openStore(name, currentEvent);
 }
 
 /** "ห้วยบง 80" / "Huay Bong-80" / "huaybong80" -> "ห้วยบง80" / "huaybong80" */
@@ -91,7 +89,7 @@ exports.handler = async (event) => {
     return json(400, { error: "cultivated_area must be a number greater than 0" });
   }
 
-  connectLambda(event);
+  currentEvent = event;
 
   try {
     const scenarioStore = storeFor("scenarios");

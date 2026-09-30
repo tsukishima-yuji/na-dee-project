@@ -94,10 +94,10 @@ function renderPage() {
       <table class="compare-table">
         <thead>
           <tr>
-            <th>Scenario</th>
+            <th>${t("compare_col_scenario")}</th>
             <th>${t("compare_metric_yield")}</th>
             <th>${t("compare_metric_water")}</th>
-            <th>WUE</th>
+            <th>${t("compare_metric_wue")}</th>
             <th>${t("result_fertilizer")}</th>
             <th>${t("result_frequency")}</th>
           </tr>
@@ -110,9 +110,9 @@ function renderPage() {
               <td class="name-cell">${escapeHtml(scenarioName(s))}${s.scenario_id === bestId ? ` <span class="best-tag">${t("compare_your_match")}</span>` : ""}</td>
               <td class="num-cell" data-label="${t("compare_metric_yield")}"><b>${fmt(s.predicted_yield)}</b> <small>${t("unit_ton_rai")}</small></td>
               <td class="num-cell" data-label="${t("compare_metric_water")}"><b>${fmt(s.water_allocation_week)}</b> <small>${t("unit_m3_rai_week")}</small></td>
-              <td class="num-cell" data-label="WUE"><b>${fmt(s.water_use_efficiency)}</b> <small>${t("unit_kg_m3")}</small></td>
-              <td class="text-cell" data-label="${t("result_fertilizer")}">${escapeHtml(s.n_fertilizer || "-")}</td>
-              <td class="text-cell" data-label="${t("result_frequency")}">${escapeHtml(s.irrigation_frequency || "-")}</td>
+              <td class="num-cell" data-label="${t("compare_metric_wue")}"><b>${fmt(s.water_use_efficiency)}</b> <small>${t("unit_kg_m3")}</small></td>
+              <td class="text-cell" data-label="${t("result_fertilizer")}">${escapeHtml(localized(s, "n_fertilizer") || "-")}</td>
+              <td class="text-cell" data-label="${t("result_frequency")}">${escapeHtml(localized(s, "irrigation_frequency") || "-")}</td>
             </tr>`
             )
             .join("")}

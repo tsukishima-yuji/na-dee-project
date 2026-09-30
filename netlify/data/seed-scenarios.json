@@ -11,9 +11,14 @@
     "water_allocation_week": 0,
     "irrigation_frequency": "ไม่ให้น้ำ (อาศัยน้ำฝน)",
     "water_use_efficiency": 6.0,
-    "n_fertilizer": "ไม่ใส่ปุ๋ย N",
+    "n_fertilizer": "ไม่ใส่ปุ๋ยไนโตรเจน",
     "weekly_schedule": "-",
-    "source": "KKU Agronomy Farm drip irrigation trial (I-0, 853 mm total water use); N levels from Phoncharoen & Banterng, Agronomy 2021"
+    "source": "KKU Agronomy Farm drip irrigation trial (I-0, 853 mm total water use); N levels from Phoncharoen & Banterng, Agronomy 2021",
+    "description_en": "No extra irrigation, rain only. Lowest cost, for farmers without a water source.",
+    "irrigation_frequency_en": "No irrigation (rain-fed)",
+    "weekly_schedule_en": "-",
+    "n_fertilizer_en": "No nitrogen fertilizer",
+    "source_th": "แปลงทดลองให้น้ำหยด คณะเกษตรศาสตร์ มหาวิทยาลัยขอนแก่น และงานวิจัย DSSAT (Phoncharoen & Banterng, 2021)"
   },
   {
     "name_th": "ให้น้ำตามคำแนะนำ — ประหยัดน้ำ",
@@ -27,9 +32,14 @@
     "water_allocation_week": 14,
     "irrigation_frequency": "ครั้งละ 24 ลบ.ม./ไร่ ประมาณทุก 12 วัน",
     "water_use_efficiency": 7.5,
-    "n_fertilizer": "14.4 กก.N/ไร่ (90 กก.N/เฮกตาร์)",
+    "n_fertilizer": "14.4 กก.ไนโตรเจน/ไร่",
     "weekly_schedule": "ให้น้ำเมื่อการระเหยสะสมครบ 60 มม. (~ทุก 12 วันในหน้าแล้ง)",
-    "source": "KKU Agronomy Farm drip irrigation trial (I-15, EV-60; 1,003 mm; WUE 74.7 kg/ha/mm)"
+    "source": "KKU Agronomy Farm drip irrigation trial (I-15, EV-60; 1,003 mm; WUE 74.7 kg/ha/mm)",
+    "description_en": "Drip 15 mm (24 m³/rai) each time evaporation reaches 60 mm. Highest water-use efficiency.",
+    "irrigation_frequency_en": "24 m³/rai about every 12 days",
+    "weekly_schedule_en": "Irrigate when evaporation reaches 60 mm (~every 12 days in the dry season)",
+    "n_fertilizer_en": "14.4 kg nitrogen/rai",
+    "source_th": "แปลงทดลองให้น้ำหยด คณะเกษตรศาสตร์ มหาวิทยาลัยขอนแก่น"
   },
   {
     "name_th": "เพิ่มผลผลิตสูงสุด",
@@ -43,9 +53,14 @@
     "water_allocation_week": 42,
     "irrigation_frequency": "ครั้งละ 48 ลบ.ม./ไร่ ประมาณทุก 8 วัน",
     "water_use_efficiency": 6.3,
-    "n_fertilizer": "21.3 กก.N/ไร่ (133.2 กก.N/เฮกตาร์)",
+    "n_fertilizer": "21.3 กก.ไนโตรเจน/ไร่",
     "weekly_schedule": "ให้น้ำเมื่อการระเหยสะสมครบ 40 มม. (~ทุก 8 วันในหน้าแล้ง)",
-    "source": "KKU Agronomy Farm drip irrigation trial (I-30, EV-40; 1,363 mm; WUE 62.8 kg/ha/mm)"
+    "source": "KKU Agronomy Farm drip irrigation trial (I-30, EV-40; 1,363 mm; WUE 62.8 kg/ha/mm)",
+    "description_en": "Drip 30 mm (48 m³/rai) each time evaporation reaches 40 mm. Highest yield, most water.",
+    "irrigation_frequency_en": "48 m³/rai about every 8 days",
+    "weekly_schedule_en": "Irrigate when evaporation reaches 40 mm (~every 8 days in the dry season)",
+    "n_fertilizer_en": "21.3 kg nitrogen/rai",
+    "source_th": "แปลงทดลองให้น้ำหยด คณะเกษตรศาสตร์ มหาวิทยาลัยขอนแก่น"
   },
   {
     "name_th": "รับมือสภาพอากาศแปรปรวน",
@@ -59,9 +74,14 @@
     "water_allocation_week": 21,
     "irrigation_frequency": "ครั้งละ 24 ลบ.ม./ไร่ ประมาณทุก 8 วัน",
     "water_use_efficiency": 7.1,
-    "n_fertilizer": "14.4 กก.N/ไร่ (90 กก.N/เฮกตาร์)",
+    "n_fertilizer": "14.4 กก.ไนโตรเจน/ไร่",
     "weekly_schedule": "ให้น้ำเมื่อการระเหยสะสมครบ 40 มม. (~ทุก 8 วันในหน้าแล้ง)",
-    "source": "KKU Agronomy Farm drip irrigation trial (I-15, EV-40; 1,108 mm)"
+    "source": "KKU Agronomy Farm drip irrigation trial (I-15, EV-40; 1,108 mm)",
+    "description_en": "Small, frequent drip 15 mm (24 m³/rai) each time evaporation reaches 40 mm. Lowers the risk of dry spells.",
+    "irrigation_frequency_en": "24 m³/rai about every 8 days",
+    "weekly_schedule_en": "Irrigate when evaporation reaches 40 mm (~every 8 days in the dry season)",
+    "n_fertilizer_en": "14.4 kg nitrogen/rai",
+    "source_th": "แปลงทดลองให้น้ำหยด คณะเกษตรศาสตร์ มหาวิทยาลัยขอนแก่น"
   },
   {
     "name_th": "เกษตรกรรายย่อย — พึ่งน้ำฝน",
@@ -75,9 +95,14 @@
     "water_allocation_week": 0,
     "irrigation_frequency": "ไม่ให้น้ำ (อาศัยน้ำฝน)",
     "water_use_efficiency": 6.0,
-    "n_fertilizer": "ไม่ใส่ปุ๋ย N",
+    "n_fertilizer": "ไม่ใส่ปุ๋ยไนโตรเจน",
     "weekly_schedule": "-",
-    "source": "Based on KKU field trial (no Udon-specific data); planting month from Phoncharoen & Banterng, Agronomy 2021"
+    "source": "Based on KKU field trial (no Udon-specific data); planting month from Phoncharoen & Banterng, Agronomy 2021",
+    "description_en": "No extra irrigation, rain only. Lowest cost (DSSAT suggests January planting is best in Udon Thani).",
+    "irrigation_frequency_en": "No irrigation (rain-fed)",
+    "weekly_schedule_en": "-",
+    "n_fertilizer_en": "No nitrogen fertilizer",
+    "source_th": "อ้างอิงแปลงทดลองของ มข. (ไม่มีข้อมูลแยกของอุดรธานี) และงานวิจัย DSSAT (Phoncharoen & Banterng, 2021)"
   },
   {
     "name_th": "ให้น้ำตามคำแนะนำ — ประหยัดน้ำ",
@@ -91,9 +116,14 @@
     "water_allocation_week": 14,
     "irrigation_frequency": "ครั้งละ 24 ลบ.ม./ไร่ ประมาณทุก 12 วัน",
     "water_use_efficiency": 7.5,
-    "n_fertilizer": "14.4 กก.N/ไร่ (90 กก.N/เฮกตาร์)",
+    "n_fertilizer": "14.4 กก.ไนโตรเจน/ไร่",
     "weekly_schedule": "ให้น้ำเมื่อการระเหยสะสมครบ 60 มม. (~ทุก 12 วันในหน้าแล้ง)",
-    "source": "Based on KKU field trial (no Udon-specific data)"
+    "source": "Based on KKU field trial (no Udon-specific data)",
+    "description_en": "Drip 15 mm (24 m³/rai) each time evaporation reaches 60 mm. Highest water-use efficiency.",
+    "irrigation_frequency_en": "24 m³/rai about every 12 days",
+    "weekly_schedule_en": "Irrigate when evaporation reaches 60 mm (~every 12 days in the dry season)",
+    "n_fertilizer_en": "14.4 kg nitrogen/rai",
+    "source_th": "อ้างอิงแปลงทดลองของ มข. (ไม่มีข้อมูลแยกของอุดรธานี)"
   },
   {
     "name_th": "เพิ่มผลผลิตสูงสุด",
@@ -107,9 +137,14 @@
     "water_allocation_week": 42,
     "irrigation_frequency": "ครั้งละ 48 ลบ.ม./ไร่ ประมาณทุก 8 วัน",
     "water_use_efficiency": 6.3,
-    "n_fertilizer": "21.3 กก.N/ไร่ (133.2 กก.N/เฮกตาร์)",
+    "n_fertilizer": "21.3 กก.ไนโตรเจน/ไร่",
     "weekly_schedule": "ให้น้ำเมื่อการระเหยสะสมครบ 40 มม. (~ทุก 8 วันในหน้าแล้ง)",
-    "source": "Based on KKU field trial (no Udon-specific data)"
+    "source": "Based on KKU field trial (no Udon-specific data)",
+    "description_en": "Drip 30 mm (48 m³/rai) each time evaporation reaches 40 mm. Highest yield, most water.",
+    "irrigation_frequency_en": "48 m³/rai about every 8 days",
+    "weekly_schedule_en": "Irrigate when evaporation reaches 40 mm (~every 8 days in the dry season)",
+    "n_fertilizer_en": "21.3 kg nitrogen/rai",
+    "source_th": "อ้างอิงแปลงทดลองของ มข. (ไม่มีข้อมูลแยกของอุดรธานี)"
   },
   {
     "name_th": "รับมือสภาพอากาศแปรปรวน",
@@ -123,8 +158,13 @@
     "water_allocation_week": 21,
     "irrigation_frequency": "ครั้งละ 24 ลบ.ม./ไร่ ประมาณทุก 8 วัน",
     "water_use_efficiency": 7.1,
-    "n_fertilizer": "14.4 กก.N/ไร่ (90 กก.N/เฮกตาร์)",
+    "n_fertilizer": "14.4 กก.ไนโตรเจน/ไร่",
     "weekly_schedule": "ให้น้ำเมื่อการระเหยสะสมครบ 40 มม. (~ทุก 8 วันในหน้าแล้ง)",
-    "source": "Based on KKU field trial (no Udon-specific data)"
+    "source": "Based on KKU field trial (no Udon-specific data)",
+    "description_en": "Small, frequent drip 15 mm (24 m³/rai) each time evaporation reaches 40 mm. Lowers the risk of dry spells.",
+    "irrigation_frequency_en": "24 m³/rai about every 8 days",
+    "weekly_schedule_en": "Irrigate when evaporation reaches 40 mm (~every 8 days in the dry season)",
+    "n_fertilizer_en": "14.4 kg nitrogen/rai",
+    "source_th": "อ้างอิงแปลงทดลองของ มข. (ไม่มีข้อมูลแยกของอุดรธานี)"
   }
 ]
