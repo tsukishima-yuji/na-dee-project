@@ -9,6 +9,12 @@
 
 # Friendly URLs: the client calls /api/... and Netlify quietly
 # forwards those requests to the actual function files.
+
+[[redirects]]
+  from = "/"
+  to = "/input-form.html"
+  status = 200
+  
 [[redirects]]
   from = "/api/scenarios/:id"
   to = "/.netlify/functions/scenarios?id=:id"

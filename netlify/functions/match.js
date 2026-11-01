@@ -1,7 +1,8 @@
 /* =========================================================
    netlify/functions/match.js
    POST /api/match
-   body: { province, variety, planting_date, irrigation_type, cultivated_area }
+   body: { province, variety, planting_date, irrigation_type, nitrogen }
+   (nitrogen = "applied" | "not_applied"; stored with the submission)
 
    Rule-based matching: every scenario gets a score out of 100
      province         40   (soil + weather differ by province)
@@ -12,7 +13,7 @@
    water-saving scenario is recommended first.
 
    Response:
-     { best, ranked: [...all scenarios with match_percent + totals], input }
+     { best, ranked: [...all scenarios with match_percent], input }
    Each submission is also saved to the "submissions" store
    (InputSubmission entity in the ER diagram).
    ========================================================= */
@@ -59,11 +60,6 @@ function scoreScenario(scenario, input) {
   return { match_percent, breakdown };
 }
 
-function round(n, digits = 1) {
-  const f = 10 ** digits;
-  return Math.round(n * f) / f;
-}
-
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") return json(405, { error: "Method not allowed" });
 
@@ -79,14 +75,11 @@ exports.handler = async (event) => {
     variety: String(body.variety || "").trim(),
     planting_date: String(body.planting_date || "").trim(),
     irrigation_type: String(body.irrigation_type || "").trim(),
-    cultivated_area: Number(body.cultivated_area),
+    nitrogen: ["applied", "not_applied"].includes(body.nitrogen) ? body.nitrogen : "",
   };
 
   if (!input.province || !input.planting_date || !input.irrigation_type) {
     return json(400, { error: "province, planting_date and irrigation_type are required" });
-  }
-  if (!Number.isFinite(input.cultivated_area) || input.cultivated_area <= 0) {
-    return json(400, { error: "cultivated_area must be a number greater than 0" });
   }
 
   currentEvent = event;
@@ -102,7 +95,6 @@ exports.handler = async (event) => {
       return json(404, { error: "No scenarios available yet — ask the admin to add scenario data" });
     }
 
-    const area = input.cultivated_area;
     const ranked = scenarios
       .map((s) => {
         const { match_percent, breakdown } = scoreScenario(s, input);
@@ -110,10 +102,6 @@ exports.handler = async (event) => {
           ...s,
           match_percent,
           match_breakdown: breakdown,
-          totals: {
-            water_week_m3: round((s.water_allocation_week || 0) * area),
-            yield_tons: round((s.predicted_yield || 0) * area),
-          },
         };
       })
       .sort(

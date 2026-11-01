@@ -19,3 +19,10 @@
 .form-footer {
   padding: 18px 16px 8px;
 }
+
+.area-note {
+  display: flex; align-items: center; gap: 8px;
+  margin: 0 16px 18px; padding: 12px 14px;
+  background: #eaf5ee; border: 1px solid #cfe6d7; border-radius: 12px;
+  font-weight: 700; font-size: 15px; color: #1f4b3d;
+}

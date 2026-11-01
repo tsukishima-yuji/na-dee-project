@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   document.getElementById("logoutBtn").addEventListener("click", () => {
     adminLogout();
-    window.location.href = "index.html";
+    window.location.href = "input-form.html";
   });
 
   document.getElementById("addScenarioBtn").addEventListener("click", () => openScenarioModal(null));

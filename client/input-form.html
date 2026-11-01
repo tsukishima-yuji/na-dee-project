@@ -29,14 +29,10 @@
 
   <form id="fieldForm" class="form-wrap" novalidate>
 
-    <!-- Province -->
-    <div class="field">
-      <label data-i18n="form_province">จังหวัด</label>
-      <div class="choice-group" id="provinceGroup">
-        <button type="button" class="choice-pill selected" data-value="khon_kaen" data-i18n="form_province_kk">ขอนแก่น</button>
-        <button type="button" class="choice-pill" data-value="udon_thani" data-i18n="form_province_ud">อุดรธานี</button>
-      </div>
-      <p class="field-error" data-i18n="form_error_required">กรุณากรอกข้อมูลนี้</p>
+    <!-- Fixed production area (replaces the province choice) -->
+    <div class="area-note">
+      <span class="area-note-icon">📍</span>
+      <span data-i18n="form_area_fixed">พื้นที่ผลิตมันสำปะหลัง (ขอนแก่น)</span>
     </div>
 
     <!-- Variety -->
@@ -66,11 +62,14 @@
       <p class="field-error" data-i18n="form_error_required">กรุณากรอกข้อมูลนี้</p>
     </div>
 
-    <!-- Cultivated area -->
+    <!-- Nitrogen fertilizer (replaces cultivated area) -->
     <div class="field">
-      <label data-i18n="form_area">ขนาดพื้นที่เพาะปลูก (ไร่)</label>
-      <input type="number" id="cultivatedArea" min="0" step="0.1" data-i18n-placeholder="form_area_placeholder" placeholder="เช่น 8" />
-      <p class="field-error" data-i18n="form_error_number">กรุณากรอกตัวเลขที่มากกว่า 0</p>
+      <label data-i18n="form_nitrogen">ปุ๋ยไนโตรเจน</label>
+      <div class="choice-group" id="nitrogenGroup">
+        <button type="button" class="choice-pill" data-value="applied" data-i18n="form_nitrogen_applied">ใส่ปุ๋ย</button>
+        <button type="button" class="choice-pill" data-value="not_applied" data-i18n="form_nitrogen_not_applied">ไม่ใส่ปุ๋ย</button>
+      </div>
+      <p class="field-error" data-i18n="form_error_required">กรุณากรอกข้อมูลนี้</p>
     </div>
 
     <div class="form-footer">
@@ -80,10 +79,6 @@
 </div>
 
 <nav class="bottom-nav">
-  <a class="nav-item" data-nav="home" href="index.html">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
-    <span data-i18n="nav_home">หน้าแรก</span>
-  </a>
   <a class="nav-item" data-nav="input" href="input-form.html">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
     <span data-i18n="nav_input">กรอกข้อมูล</span>
@@ -97,7 +92,6 @@
     <span data-i18n="nav_admin">รายงาน</span>
   </a>
 </nav>
-
 
 <script src="js/api.js"></script>
 <script src="js/main.js"></script>

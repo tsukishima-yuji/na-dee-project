@@ -1,13 +1,13 @@
 /* =========================================================
    compare.js — logic for compare.html only
-   Loads live scenarios from /api/scenarios, filters by province,
-   and shows them side by side as a bar chart + a table.
+   Loads live scenarios from /api/scenarios, keeps only the Khon Kaen
+   scenarios, and shows them side by side as a bar chart + a table.
    If the farmer already has a match result, that scenario is
-   highlighted and the province is pre-selected.
+   highlighted.
    ========================================================= */
 
 let allScenarios = [];
-let currentProvince = "khon_kaen";
+const currentProvince = "khon_kaen"; // fixed: only the Khon Kaen production area
 let currentMetric = "predicted_yield";
 
 const METRICS = [
@@ -17,17 +17,6 @@ const METRICS = [
 ];
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const match = readMatchResult();
-  if (match && match.input && match.input.province) currentProvince = match.input.province;
-
-  const switchEl = document.getElementById("provinceSwitch");
-  switchEl.addEventListener("click", (e) => {
-    const pill = e.target.closest(".choice-pill");
-    if (!pill) return;
-    currentProvince = pill.dataset.value;
-    renderPage();
-  });
-
   const root = document.getElementById("compareRoot");
   root.innerHTML = `<p class="loading-note">${t("compare_loading")}</p>`;
   try {
@@ -42,10 +31,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 function renderPage() {
   const root = document.getElementById("compareRoot");
   if (!root) return;
-
-  document.querySelectorAll("#provinceSwitch .choice-pill").forEach((p) =>
-    p.classList.toggle("selected", p.dataset.value === currentProvince)
-  );
 
   const match = readMatchResult();
   const bestId = match && match.best ? match.best.scenario_id : null;

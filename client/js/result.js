@@ -2,8 +2,8 @@
    result.js — logic for result.html only
    Reads the /api/match response saved by input-form.js
    (sessionStorage "nadee_match_result") and shows:
-   best scenario + match %, predicted outputs for the farmer's
-   area, irrigation advice, and why this scenario was matched.
+   best scenario + match %, predicted outputs (per rai),
+   irrigation advice, and why this scenario was matched.
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", renderPage);
@@ -22,7 +22,6 @@ function renderPage() {
   }
 
   const { best, input, ranked } = result;
-  const area = input.cultivated_area;
   const alternatives = ranked.filter((s) => s.scenario_id !== best.scenario_id && s.province === input.province);
 
   root.innerHTML = `
@@ -41,24 +40,24 @@ function renderPage() {
         ${input.variety ? `<span>${escapeHtml(input.variety)}</span>` : ""}
         <span>${escapeHtml(labelFor("planting", input.planting_date))}</span>
         <span>${escapeHtml(labelFor("irrigation", input.irrigation_type))}</span>
-        <span>${fmt(area)} ${t("unit_rai")}</span>
+        ${input.nitrogen ? `<span>${escapeHtml(labelFor("nitrogen", input.nitrogen))}</span>` : ""}
       </div>
     </section>
 
     <div class="result-grid">
     <div class="result-col">
-    <!-- Predicted outputs for the whole field -->
+    <!-- Predicted outputs (per rai) -->
     <h2 class="section-title">${t("result_outputs_title")}</h2>
     <section class="stats-row">
       <div class="stat-box">
-        <div class="stat-number">${fmt(best.totals.yield_tons)}</div>
-        <div class="stat-label">${t("result_total_yield")}</div>
-        <div class="stat-sub">${fmt(best.predicted_yield)} ${t("unit_ton_rai")}</div>
+        <div class="stat-number">${fmt(best.predicted_yield)}</div>
+        <div class="stat-label">${t("compare_metric_yield")}</div>
+        <div class="stat-sub">${t("unit_ton_rai")}</div>
       </div>
       <div class="stat-box">
-        <div class="stat-number">${fmt(best.totals.water_week_m3)}</div>
-        <div class="stat-label">${t("result_total_water")}</div>
-        <div class="stat-sub">${fmt(best.water_allocation_week)} ${t("unit_m3_rai_week")}</div>
+        <div class="stat-number">${fmt(best.water_allocation_week)}</div>
+        <div class="stat-label">${t("compare_metric_water")}</div>
+        <div class="stat-sub">${t("unit_m3_rai_week")}</div>
       </div>
       <div class="stat-box">
         <div class="stat-number">${fmt(best.water_use_efficiency)}</div>
@@ -148,7 +147,7 @@ async function renderWeather(best, input) {
   const current = document.getElementById("weatherCard");
   if (!current) return;
 
-  const adj = adjustWaterForWeather(best, weather, input.cultivated_area);
+  const adj = adjustWaterForWeather(best, weather, 1); // 1 = per rai
   const maxRain = Math.max(...weather.days.map((d) => d.rain_mm), 5);
   const locale = getLang() === "th" ? "th-TH" : "en-US";
 
@@ -156,7 +155,7 @@ async function renderWeather(best, input) {
   if (adj.base_per_rai === 0) advice = t("weather_advice_rainfed");
   else if (adj.skip_irrigation) advice = t("weather_advice_skip");
   else
-    advice = `${t("weather_advice_prefix")} <b>${fmt(adj.adjusted_per_rai)}</b> ${t("unit_m3_rai_week")} · ${t("weather_total")} <b>${fmt(adj.adjusted_total)}</b> ${t("unit_m3")}`;
+    advice = `${t("weather_advice_prefix")} <b>${fmt(adj.adjusted_per_rai)}</b> ${t("unit_m3_rai_week")}`;
 
   current.innerHTML = `
     <div class="weather-days">
@@ -185,7 +184,7 @@ async function renderWeather(best, input) {
     <div class="weather-advice ${adj.skip_irrigation ? "skip" : ""}">
       <span>💧</span>
       <p>${advice}
-        ${adj.saved_total > 0 && !adj.skip_irrigation ? `<br><small>${t("weather_saved")} ${fmt(adj.saved_total)} ${t("unit_m3")}</small>` : ""}
+        ${adj.saved_total > 0 && !adj.skip_irrigation ? `<br><small>${t("weather_saved")} ${fmt(adj.saved_total)} ${t("unit_m3_rai_week")}</small>` : ""}
       </p>
     </div>
     <p class="weather-source">${t("weather_source")}</p>
@@ -220,6 +219,7 @@ function labelFor(kind, value) {
     province: { khon_kaen: "form_province_kk", udon_thani: "form_province_ud" },
     planting: { early: "form_planting_early", late: "form_planting_late" },
     irrigation: { rain_fed: "irrigation_short_rain", system: "irrigation_short_system" },
+    nitrogen: { applied: "form_nitrogen_applied", not_applied: "form_nitrogen_not_applied" },
   };
   const key = keys[kind] && keys[kind][value];
   return key ? t(key) : value || "-";
