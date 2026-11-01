@@ -269,9 +269,10 @@ async function handleScenarioFormSubmit(event) {
     closeScenarioModal();
     await renderDashboard();
   } catch (err) {
-    showToast(t("toast_error"));
+    showToast(err && /already exists/.test(err.message) ? t("toast_duplicate") : t("toast_error"));
   } finally {
     btn.disabled = false;
+    document.getElementById("resetBtn").disabled = false;
   }
 }
 
@@ -289,6 +290,7 @@ function openDeleteModal(scenarioId) {
 }
 
 function openResetModal() {
+  if (document.getElementById("resetBtn").disabled) return;
   confirmMode = "reset";
   document.getElementById("confirmTitle").textContent = t("admin_reset_title");
   document.getElementById("confirmDeleteBtn").textContent = t("admin_reset_confirm");
@@ -306,8 +308,8 @@ async function handleConfirm() {
   btn.disabled = true;
   try {
     if (confirmMode === "reset") {
-      for (const s of allScenarios) await deleteScenario(s.scenario_id); // api.js
-      await seedScenarios();
+      document.getElementById("resetBtn").disabled = true;
+      await resetScenarios(); // api.js — one request on the server, never duplicates
       showToast(t("toast_reset"));
     } else if (deletingScenarioId !== null) {
       await deleteScenario(deletingScenarioId);
@@ -317,9 +319,10 @@ async function handleConfirm() {
     currentVariety = "all";
     await renderDashboard();
   } catch (err) {
-    showToast(t("toast_error"));
+    showToast(err && /already exists/.test(err.message) ? t("toast_duplicate") : t("toast_error"));
   } finally {
     btn.disabled = false;
+    document.getElementById("resetBtn").disabled = false;
   }
 }
 

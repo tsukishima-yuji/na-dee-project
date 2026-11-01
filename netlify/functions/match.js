@@ -17,6 +17,7 @@
    ========================================================= */
 
 const { openStore } = require("../lib/blob-store");
+const { listOrSeed } = require("../lib/seed");
 
 const ALLOWED = {
   variety: ["KU50", "RY9", "RY11", "CMR38"],
@@ -78,11 +79,7 @@ exports.handler = async (event) => {
   }
 
   try {
-    const scenarioStore = openStore("scenarios", event);
-    const { blobs } = await scenarioStore.list();
-    const scenarios = (
-      await Promise.all(blobs.map((b) => scenarioStore.get(b.key, { type: "json" })))
-    ).filter(Boolean);
+    const scenarios = await listOrSeed(openStore("scenarios", event)); // auto-loads the research data if empty
 
     if (scenarios.length === 0) {
       return json(404, { error: "No scenarios available yet — ask the admin to add scenario data" });

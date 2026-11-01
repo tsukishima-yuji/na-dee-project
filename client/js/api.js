@@ -59,9 +59,15 @@ async function deleteScenario(id) {
   return handleResponse(res);
 }
 
-/** POST /api/scenarios?seed=1 — load the research dataset (only works when empty) */
+/** POST /api/scenarios?seed=1 — (re)write the 32 research scenarios (safe to repeat, never duplicates) */
 async function seedScenarios() {
   const res = await fetch(`${API_BASE}/scenarios?seed=1`, { method: "POST" });
+  return handleResponse(res);
+}
+
+/** POST /api/scenarios?reset=1 — delete everything and reload the 32 research scenarios */
+async function resetScenarios() {
+  const res = await fetch(`${API_BASE}/scenarios?reset=1`, { method: "POST" });
   return handleResponse(res);
 }
 

@@ -1,27 +1,25 @@
 /* =========================================================
    netlify/functions/scenarios.js
-   GET    /api/scenarios         -> list all scenarios
-   POST   /api/scenarios         -> create a scenario
-   POST   /api/scenarios?seed=1  -> load research dataset (only when empty)
-   PUT    /api/scenarios/:id     -> update a scenario
-   DELETE /api/scenarios/:id     -> delete a scenario
+   GET    /api/scenarios          -> list all scenarios (auto-loads the 32 research scenarios if empty)
+   POST   /api/scenarios          -> create a scenario (rejects duplicate conditions)
+   POST   /api/scenarios?seed=1   -> (re)write the 32 research scenarios (safe to repeat)
+   POST   /api/scenarios?reset=1  -> delete everything, then write the 32 research scenarios
+   PUT    /api/scenarios/:id      -> update a scenario (rejects duplicate conditions)
+   DELETE /api/scenarios/:id      -> delete a scenario
 
    Stored in Netlify Blobs — one blob per scenario, keyed by
-   scenario_id. Field list lives in netlify/lib/scenario-schema.js
+   scenario_id. Field list lives in netlify/lib/scenario-schema.js,
+   research base data in netlify/lib/seed.js
    ========================================================= */
 
 const { openStore } = require("../lib/blob-store");
 const { sanitizeScenario } = require("../lib/scenario-schema");
-const SEED_SCENARIOS = require("../data/seed-scenarios.json");
+const { listOrSeed, writeSeed, resetToSeed, readAll, isDuplicate } = require("../lib/seed");
 
 const STORE_NAME = "scenarios";
 
 function json(statusCode, body) {
   return { statusCode, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) };
-}
-
-function getStoreInstance(event) {
-  return openStore(STORE_NAME, event);
 }
 
 /** Scenario id from ?id=123, or from the path /api/scenarios/123 (live Netlify keeps the original path) */
@@ -30,12 +28,6 @@ function getId(event) {
   if (query.id) return String(query.id);
   const m = String(event.path || event.rawUrl || "").match(/scenarios\/(\d+)/);
   return m ? m[1] : null;
-}
-
-async function listScenarios(store) {
-  const { blobs } = await store.list();
-  const scenarios = await Promise.all(blobs.map((b) => store.get(b.key, { type: "json" })));
-  return scenarios.filter(Boolean).sort((a, b) => a.scenario_id - b.scenario_id);
 }
 
 function parseBody(event) {
@@ -47,38 +39,27 @@ function parseBody(event) {
 }
 
 exports.handler = async (event) => {
-  const store = getStoreInstance(event);
+  const store = openStore(STORE_NAME, event);
   const query = event.queryStringParameters || {};
   const id = getId(event);
 
   try {
     switch (event.httpMethod) {
       case "GET":
-        return json(200, await listScenarios(store));
+        return json(200, await listOrSeed(store));
 
       case "POST": {
-        // ---- Load the research dataset in one click ----
-        if (query.seed) {
-          const existing = await listScenarios(store);
-          if (existing.length > 0) {
-            return json(409, { error: "Scenarios already exist — delete them first to reload the dataset" });
-          }
-          const now = Date.now();
-          const created = [];
-          for (let i = 0; i < SEED_SCENARIOS.length; i++) {
-            const { data } = sanitizeScenario(SEED_SCENARIOS[i]);
-            const scenario = { scenario_id: now + i, ...data, created_at: new Date().toISOString() };
-            await store.setJSON(String(scenario.scenario_id), scenario);
-            created.push(scenario);
-          }
-          return json(201, created);
-        }
+        if (query.reset) return json(200, await resetToSeed(store));
+        if (query.seed) return json(200, await writeSeed(store));
 
         const body = parseBody(event);
         if (!body) return json(400, { error: "Invalid request body" });
 
         const { data, errors } = sanitizeScenario(body);
         if (errors.length) return json(400, { error: errors.join("; ") });
+        if (isDuplicate(await readAll(store), data)) {
+          return json(409, { error: "A scenario with these 4 conditions already exists" });
+        }
 
         const scenario = { scenario_id: Date.now(), ...data, created_at: new Date().toISOString() };
         await store.setJSON(String(scenario.scenario_id), scenario);
@@ -99,6 +80,9 @@ exports.handler = async (event) => {
 
         const updated = { ...existing, ...data, updated_at: new Date().toISOString() };
         if (!updated.name_en) updated.name_en = updated.name_th;
+        if (isDuplicate(await readAll(store), updated, existing.scenario_id)) {
+          return json(409, { error: "A scenario with these 4 conditions already exists" });
+        }
 
         await store.setJSON(id, updated);
         return json(200, updated);
