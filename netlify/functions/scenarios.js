@@ -45,8 +45,11 @@ exports.handler = async (event) => {
 
   try {
     switch (event.httpMethod) {
-      case "GET":
-        return json(200, await listOrSeed(store));
+      case "GET": {
+        const res = json(200, await listOrSeed(store));
+        res.headers["Access-Control-Allow-Origin"] = "*"; // read-only access for other apps
+        return res;
+      }
 
       case "POST": {
         if (query.reset) return json(200, await resetToSeed(store));

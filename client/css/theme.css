@@ -556,3 +556,45 @@ body {
   .admin-role { display: none; }
   .pill-btn, .lang-toggle { padding: 8px 12px; }
 }
+
+/* ---- Live planting check card (result page) ---- */
+.pc-card { background: #fff; border: 1px solid var(--line); border-radius: 26px; box-shadow: var(--shadow-soft); padding: 20px; margin-bottom: 26px; }
+.pc-loading, .pc-error { display: flex; align-items: center; gap: 8px; margin: 0; color: var(--muted); font-size: 14px; }
+.pc-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.pc-verdict { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px; font-weight: 800; font-size: 15px; border: 1px solid; }
+.pc-verdict .ico { width: 16px; height: 16px; }
+.pc-verdict.good { background: var(--g-50); border-color: #bfe2cc; color: var(--g-500); }
+.pc-verdict.watch { background: #fff6e2; border-color: #f1d79a; color: #a46d06; }
+.pc-verdict.irrigate { background: #eef6fd; border-color: #c9e0f5; color: #2b7cc4; }
+.pc-live { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--muted); }
+.pc-live .dot { width: 7px; height: 7px; border-radius: 50%; background: #e2561c; box-shadow: 0 0 0 3px rgba(226,86,28,.15); }
+.pc-msg { margin: 12px 0 14px; font-size: 16px; font-weight: 600; line-height: 1.5; }
+.pc-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+.pc-stats div { background: #faf8f3; border: 1px solid var(--line); border-radius: 16px; padding: 12px 14px; }
+.pc-stats span { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+.pc-stats b { font-size: 22px; font-weight: 800; color: var(--ink); }
+.pc-stats small { margin-left: 4px; font-size: 12px; color: var(--muted); }
+.pc-bars { display: flex; align-items: flex-end; gap: 3px; height: 70px; padding: 0 2px; border-bottom: 1px solid var(--line); }
+.pc-bar { flex: 1; height: 100%; display: flex; align-items: flex-end; }
+.pc-bar span { display: block; width: 100%; border-radius: 4px 4px 0 0; }
+.pc-bar.past span { background: #c9c3b6; }
+.pc-bar.fc span { background: #4a9be0; }
+.pc-legend { display: flex; gap: 16px; margin-top: 8px; font-size: 12px; color: var(--muted); }
+.pc-legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.pc-legend .past::before { background: #c9c3b6; }
+.pc-legend .fc::before { background: #4a9be0; }
+.pc-source { margin: 10px 0 0; font-size: 12px; color: #9a968b; }
+@media (min-width: 768px) { .pc-card { padding: 24px 28px; } .pc-bars { height: 90px; gap: 5px; } }
+@media (max-width: 420px) { .pc-stats b { font-size: 18px; } .pc-stats div { padding: 10px; } }
+
+/* Result: recommendations + planting check side by side on desktop */
+.res-cols { display: block; }
+@media (min-width: 1024px) {
+  .res-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+  .res-col .rec-card, .res-col .pc-card { margin-bottom: 26px; }
+  .res-col .rec-row { padding: 16px; }
+  .res-col .rec-value { font-size: 15px; }
+}
+@media (min-width: 1024px) {
+  .pc-stats small { display: block; margin: 2px 0 0; }
+}

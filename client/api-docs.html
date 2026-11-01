@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Na-Dee API</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/desktop.css" />
+<link rel="stylesheet" href="css/theme.css" />
+<style>
+  .docs { padding: 8px 16px 48px; }
+  @media (min-width: 1024px) { .docs { padding: 8px 0 64px; } }
+  .docs-hero { border-radius: var(--r-xl); padding: 32px 26px; color: #fff; margin-bottom: 22px;
+    background: radial-gradient(420px 240px at 95% 0%, rgba(52,168,110,.3), transparent 70%), linear-gradient(150deg, var(--g-700), var(--g-900)); box-shadow: var(--shadow-lift); }
+  .docs-hero h1 { margin: 10px 0 8px; font-size: 32px; letter-spacing: -.02em; }
+  .docs-hero p { margin: 0; color: rgba(255,255,255,.8); max-width: 720px; line-height: 1.6; }
+  .base { display: inline-flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 16px; padding: 8px 12px; border-radius: 12px; background: rgba(0,0,0,.2); font-family: "JetBrains Mono", monospace; font-size: 13px; }
+  .base b { color: #a7f0c6; font-family: "Plus Jakarta Sans", sans-serif; }
+  .ep-index { display: grid; gap: 10px; margin-bottom: 22px; }
+  @media (min-width: 768px) { .ep-index { grid-template-columns: repeat(3, 1fr); } }
+  .ep-link { display: block; padding: 14px 16px; background: #fff; border: 1px solid var(--line); border-radius: 18px; text-decoration: none; color: var(--ink); box-shadow: var(--shadow-soft); }
+  .ep-link small { display: block; color: var(--muted); margin-top: 4px; font-size: 13px; }
+  .method { display: inline-block; font-family: "JetBrains Mono", monospace; font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 6px; margin-right: 6px; }
+  .method.get { background: #e3f4e9; color: #1f6b43; }
+  .method.post { background: #fde9dc; color: #b9470f; }
+  .path { font-family: "JetBrains Mono", monospace; font-weight: 600; font-size: 14px; }
+  .ep { background: #fff; border: 1px solid var(--line); border-radius: 24px; box-shadow: var(--shadow-soft); padding: 22px; margin-bottom: 18px; }
+  .ep h2 { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin: 0 0 6px; font-size: 18px; }
+  .ep > p { color: var(--muted); margin: 0 0 14px; line-height: 1.6; }
+  .ep h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--g-600); margin: 18px 0 8px; }
+  table.params { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.params th, table.params td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  table.params th { font-size: 12px; color: var(--muted); font-weight: 700; }
+  table.params code { font-family: "JetBrains Mono", monospace; font-size: 13px; }
+  pre { margin: 0; padding: 14px 16px; border-radius: 14px; background: #14211b; color: #d7f5e3; font-family: "JetBrains Mono", monospace; font-size: 13px; line-height: 1.55; overflow-x: auto; white-space: pre; }
+  .two { display: grid; gap: 12px; }
+  .two > div { min-width: 0; }
+  .ep { min-width: 0; overflow: hidden; }
+  @media (min-width: 1024px) { .two { grid-template-columns: 1fr 1fr; } }
+  .try { margin-top: 14px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .try .btn-cta { width: auto; min-height: 42px; padding: 8px 18px; font-size: 14px; border-radius: 999px; }
+  .try-out { display: none; margin-top: 12px; max-height: 320px; overflow: auto; }
+  .try-out.show { display: block; }
+  .status { font-size: 13px; color: var(--muted); }
+  .note { font-size: 13px; color: var(--muted); margin-top: 10px; }
+</style>
+</head>
+<body data-page="api">
+
+<div class="app-shell no-bottom-nav">
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <a class="brand-pill" href="index.html" style="text-decoration:none"><span class="dot"></span> Na-Dee</a>
+      <span class="role-pill">API docs</span>
+    </div>
+    <div class="topbar-right">
+      <a class="pill-btn" href="index.html" style="text-decoration:none">Open the app</a>
+    </div>
+  </header>
+
+  <main class="docs">
+    <section class="docs-hero">
+      <span class="res-eyebrow"><span class="dot"></span>Public REST API · JSON</span>
+      <h1>Na-Dee API</h1>
+      <p>Cassava yield scenarios from the DSSAT crop model (32 scenarios: 4 varieties × 2 planting dates × 2 water × 2 nitrogen),
+        plus a live planting-readiness check built on the Open-Meteo weather API. The Na-Dee web app uses these same URLs.
+        No key needed; read endpoints allow cross-origin calls.</p>
+      <div class="base"><b>Base URL</b> https://statuesque-pavlova-991b3b.netlify.app</div>
+    </section>
+
+    <section class="ep-index">
+      <a class="ep-link" href="#match"><span class="method post">POST</span><span class="path">/api/match</span><small>Predict yield for one field</small></a>
+      <a class="ep-link" href="#planting"><span class="method get">GET</span><span class="path">/api/planting-check</span><small>Is now a good time to plant? (calls Open-Meteo)</small></a>
+      <a class="ep-link" href="#scenarios"><span class="method get">GET</span><span class="path">/api/scenarios</span><small>All 32 yield scenarios</small></a>
+    </section>
+
+    <!-- ===== /api/match ===== -->
+    <section class="ep" id="match">
+      <h2><span class="method post">POST</span><span class="path">/api/match</span></h2>
+      <p>Send the 4 field conditions and the field size. Returns the matching scenario with the whole-field yield
+        (normal-year range) and the 3 alternatives for the same variety and planting date.</p>
+      <h3>Request body (JSON)</h3>
+      <table class="params">
+        <tr><th>Field</th><th>Type</th><th>Allowed values</th></tr>
+        <tr><td><code>variety</code></td><td>string</td><td><code>KU50</code> Kasetsart 50 · <code>RY9</code> Rayong 9 · <code>RY11</code> Rayong 11 · <code>CMR38</code> CMR38-125-77</td></tr>
+        <tr><td><code>planting_date</code></td><td>string</td><td><code>early</code> early rainy season (May) · <code>late</code> late rainy season (Oct)</td></tr>
+        <tr><td><code>irrigation_type</code></td><td>string</td><td><code>rain_fed</code> · <code>system</code> (full irrigation)</td></tr>
+        <tr><td><code>nitrogen</code></td><td>string</td><td><code>applied</code> (90 kg N/ha) · <code>not_applied</code></td></tr>
+        <tr><td><code>cultivated_area</code></td><td>number</td><td>field size in rai, &gt; 0</td></tr>
+      </table>
+      <div class="two" style="margin-top:14px">
+        <div><h3>Example request</h3>
+<pre>curl -X POST https://statuesque-pavlova-991b3b.netlify.app/api/match \
+  -H "Content-Type: application/json" \
+  -d '{"variety":"RY11","planting_date":"late",
+       "irrigation_type":"rain_fed","nitrogen":"applied",
+       "cultivated_area":8}'</pre>
+<pre style="margin-top:10px">// JavaScript
+const res = await fetch("/api/match", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ variety: "RY11", planting_date: "late",
+    irrigation_type: "rain_fed", nitrogen: "applied", cultivated_area: 8 }),
+});
+const { best, alternatives } = await res.json();</pre></div>
+        <div><h3>Sample response (shortened)</h3>
+<pre>{
+  "best": {
+    "scenario_id": 1022,
+    "variety": "RY11",
+    "planting_season": "late",
+    "irrigation_type": "rain_fed",
+    "nitrogen": "applied",
+    "predicted_yield": 3.81,      // t/rai, fresh roots
+    "yield_sd": 0.73,
+    "totals": {
+      "area_rai": 8,
+      "yield_tons": 30.5,
+      "yield_tons_low": 24.6,
+      "yield_tons_high": 36.3
+    }
+  },
+  "alternatives": [
+    { "nitrogen": "applied", "irrigation_type": "system",
+      "predicted_yield": 2.95, "diff_tons": -6.9, ... },
+    ...
+  ]
+}</pre></div>
+      </div>
+      <h3>Errors</h3>
+      <table class="params">
+        <tr><td><code>400</code></td><td>a field is missing or not an allowed value, e.g. <code>{"error":"variety must be one of KU50, RY9, RY11, CMR38"}</code></td></tr>
+        <tr><td><code>404</code></td><td>no scenario for this combination</td></tr>
+      </table>
+      <div class="try"><button class="btn-cta" data-try="match">Try it (RY11 · late · rainfed · N · 8 rai)</button><span class="status" id="st-match"></span></div>
+      <pre class="try-out" id="out-match"></pre>
+    </section>
+
+    <!-- ===== /api/planting-check ===== -->
+    <section class="ep" id="planting">
+      <h2><span class="method get">GET</span><span class="path">/api/planting-check</span></h2>
+      <p>Turns live weather into a planting decision. Our server calls the external
+        <b>Open-Meteo Forecast API</b> (<code>https://api.open-meteo.com/v1/forecast</code>) with
+        <code>daily=precipitation_sum</code>, <code>hourly=soil_moisture_3_to_9cm</code>, <code>past_days=7</code>, <code>forecast_days=14</code>,
+        then returns soil moisture, past and expected rain, and a verdict. Cached 30 minutes.</p>
+      <h3>Query parameters (optional)</h3>
+      <table class="params">
+        <tr><th>Name</th><th>Type</th><th>Default</th></tr>
+        <tr><td><code>lat</code></td><td>number, -90..90</td><td>16.47 (Khon Kaen University farm)</td></tr>
+        <tr><td><code>lon</code></td><td>number, -180..180</td><td>102.81</td></tr>
+      </table>
+      <div class="two" style="margin-top:14px">
+        <div><h3>Example request</h3>
+<pre>curl "https://statuesque-pavlova-991b3b.netlify.app/api/planting-check"
+curl "https://statuesque-pavlova-991b3b.netlify.app/api/planting-check?lat=15.0&amp;lon=102.1"</pre>
+          <h3>Verdict rules</h3>
+          <table class="params">
+            <tr><td><code>good</code></td><td>soil not dry (≥ 0.12 m³/m³) and ≥ 30 mm rain expected in 14 days</td></tr>
+            <tr><td><code>irrigate</code></td><td>soil not moist (&lt; 0.20) and &lt; 30 mm rain expected</td></tr>
+            <tr><td><code>watch</code></td><td>anything in between</td></tr>
+          </table></div>
+        <div><h3>Sample response</h3>
+<pre>{
+  "location": { "lat": 16.47, "lon": 102.81,
+                "name": "Khon Kaen (KKU farm)" },
+  "soil_moisture_now": 0.143,     // m³/m³
+  "soil_status": "fair",          // moist | fair | dry
+  "rain_past_7d_mm": 13.2,
+  "rain_next_14d_mm": 9.8,
+  "daily": [ { "date": "2026-10-26", "rain_mm": 3.2,
+               "forecast": false }, ... ],
+  "verdict": "irrigate",          // good | watch | irrigate
+  "source": "Open-Meteo Forecast API (api.open-meteo.com)",
+  "fetched_at": "2026-11-01T15:40:12.000Z"
+}</pre></div>
+      </div>
+      <p class="note">502 is returned if Open-Meteo cannot be reached; the app then hides the card and keeps working.</p>
+      <div class="try"><button class="btn-cta" data-try="planting">Try it</button><span class="status" id="st-planting"></span></div>
+      <pre class="try-out" id="out-planting"></pre>
+    </section>
+
+    <!-- ===== /api/scenarios ===== -->
+    <section class="ep" id="scenarios">
+      <h2><span class="method get">GET</span><span class="path">/api/scenarios</span></h2>
+      <p>All yield scenarios (32 research scenarios from DSSAT, ids 1001–1032, plus any added by the admin).
+        Each one has Thai and English text.</p>
+      <div class="two">
+        <div><h3>Example request</h3>
+<pre>curl https://statuesque-pavlova-991b3b.netlify.app/api/scenarios</pre>
+          <h3>Main fields</h3>
+          <table class="params">
+            <tr><td><code>predicted_yield</code></td><td>fresh root yield, t/rai (29-season mean)</td></tr>
+            <tr><td><code>yield_sd</code></td><td>year-to-year variation, t/rai</td></tr>
+            <tr><td><code>yield_dry_kg_ha</code></td><td>DSSAT dry root weight, kg/ha</td></tr>
+            <tr><td><code>dmc_pct</code></td><td>dry matter % used to convert dry → fresh</td></tr>
+          </table>
+          <p class="note">Admin endpoints (used by the dashboard): <code>POST /api/scenarios</code>, <code>PUT /api/scenarios/:id</code>,
+            <code>DELETE /api/scenarios/:id</code>, <code>POST /api/scenarios?reset=1</code>.</p></div>
+        <div><h3>Sample item</h3>
+<pre>{
+  "scenario_id": 1001,
+  "name_th": "เกษตรศาสตร์ 50 · ต้นฝน · อาศัยน้ำฝน · ไม่ใส่ปุ๋ย",
+  "name_en": "Kasetsart 50 · early rainy season · rainfed · no nitrogen",
+  "variety": "KU50",
+  "planting_season": "early",
+  "irrigation_type": "rain_fed",
+  "nitrogen": "not_applied",
+  "predicted_yield": 1.54,
+  "yield_sd": 0.24,
+  "yield_dry_kg_ha": 3335,
+  "dmc_pct": 34.7,
+  "source": "DSSAT CSM-MANIHOT-Cassava, Khon Kaen, ..."
+}</pre></div>
+      </div>
+      <div class="try"><button class="btn-cta" data-try="scenarios">Try it</button><span class="status" id="st-scenarios"></span></div>
+      <pre class="try-out" id="out-scenarios"></pre>
+    </section>
+  </main>
+</div>
+
+<script>
+  // "Try it" buttons call the live API on this same site
+  const CALLS = {
+    match: () => fetch("/api/match", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ variety: "RY11", planting_date: "late", irrigation_type: "rain_fed", nitrogen: "applied", cultivated_area: 8 }),
+    }),
+    planting: () => fetch("/api/planting-check"),
+    scenarios: () => fetch("/api/scenarios"),
+  };
+  document.querySelectorAll("[data-try]").forEach((btn) =>
+    btn.addEventListener("click", async () => {
+      const k = btn.dataset.try, out = document.getElementById("out-" + k), st = document.getElementById("st-" + k);
+      st.textContent = "Calling…"; btn.disabled = true;
+      const t0 = performance.now();
+      try {
+        const res = await CALLS[k]();
+        let data = await res.json();
+        if (k === "scenarios" && Array.isArray(data)) data = { count: data.length, first: data[0] };
+        if (k === "match" && data.best) data = { best: data.best, alternatives: (data.alternatives || []).map((a) => ({ irrigation_type: a.irrigation_type, nitrogen: a.nitrogen, predicted_yield: a.predicted_yield, diff_tons: a.diff_tons })) };
+        st.textContent = `HTTP ${res.status} · ${Math.round(performance.now() - t0)} ms`;
+        out.textContent = JSON.stringify(data, null, 2);
+      } catch (e) {
+        st.textContent = "Network error"; out.textContent = String(e);
+      }
+      out.classList.add("show"); btn.disabled = false;
+    })
+  );
+</script>
+</body>
+</html>

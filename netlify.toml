@@ -30,3 +30,8 @@
   from = "/api/match"
   to = "/.netlify/functions/match"
   status = 200
+
+[[redirects]]
+  from = "/api/planting-check"
+  to = "/.netlify/functions/planting-check"
+  status = 200

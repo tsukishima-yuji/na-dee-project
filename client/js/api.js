@@ -71,6 +71,12 @@ async function resetScenarios() {
   return handleResponse(res);
 }
 
+/** GET /api/planting-check — soil moisture + rain forecast (our API, which calls Open-Meteo) */
+async function getPlantingCheck() {
+  const res = await fetch(`${API_BASE}/planting-check`);
+  return handleResponse(res);
+}
+
 /** POST /api/match — farmer input form submission */
 async function submitFarmerInput(formData) {
   const res = await fetch(`${API_BASE}/match`, {

@@ -27,7 +27,16 @@ const ALLOWED = {
 };
 
 function json(statusCode, body) {
-  return { statusCode, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) };
+  return {
+    statusCode,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*", // public API: other sites/apps may call it
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+    },
+    body: JSON.stringify(body),
+  };
 }
 
 function round(n, digits = 1) {
@@ -51,6 +60,7 @@ function withTotals(s, area) {
 }
 
 exports.handler = async (event) => {
+  if (event.httpMethod === "OPTIONS") return json(204, {});
   if (event.httpMethod !== "POST") return json(405, { error: "Method not allowed" });
 
   let body;
