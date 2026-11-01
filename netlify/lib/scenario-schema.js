@@ -12,12 +12,16 @@ const SCENARIO_FIELDS = {
   province:              { type: "enum", values: ["khon_kaen", "udon_thani"], required: true },
 
   // --- matching keys (compared with the farmer's input form) ---
-  variety:               { type: "text" },   // comma-separated, e.g. "ห้วยบง 80, Huay Bong 80"
+  variety:               { type: "enum", values: ["KU50", "RY9", "RY11", "CMR38"] },
   planting_season:       { type: "enum", values: ["early", "late"] },
   irrigation_type:       { type: "enum", values: ["rain_fed", "system"] },
+  nitrogen:              { type: "enum", values: ["applied", "not_applied"] },
 
   // --- outputs shown to the farmer ---
   predicted_yield:       { type: "number" }, // ตัน/ไร่ (fresh root)
+  yield_sd:              { type: "number" }, // ± ตัน/ไร่ (ความต่างแต่ละปี)
+  yield_dry_kg_ha:       { type: "number" }, // ผล DSSAT (น้ำหนักแห้ง)
+  dmc_pct:               { type: "number" }, // % น้ำหนักแห้งที่ใช้แปลง
   water_allocation_week: { type: "number" }, // ลบ.ม./ไร่/สัปดาห์
   irrigation_frequency:  { type: "text" },
   water_use_efficiency:  { type: "number" }, // กก./ลบ.ม.

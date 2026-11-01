@@ -4,9 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Na-Dee — Admin Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/style.css" />
 <link rel="stylesheet" href="css/admin.css" />
 <link rel="stylesheet" href="css/desktop.css" />
+<link rel="stylesheet" href="css/theme.css" />
 </head>
 <body data-page="admin">
 
@@ -15,7 +19,7 @@
   <header class="topbar">
     <div class="topbar-left">
       <span class="brand-pill"><span class="dot"></span> <span data-i18n="brand">นาดี</span></span>
-      <span class="role-pill" data-i18n="role_farmer">เกษตรกร</span>
+      <span class="role-pill admin-role"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg><span data-i18n="admin_role">ผู้ดูแล</span></span>
     </div>
     <div class="topbar-right">
       <button class="pill-btn" id="logoutBtn" data-i18n="admin_logout">ออกจากระบบ</button>
@@ -23,165 +27,143 @@
     </div>
   </header>
 
-  <div class="admin-header">
-    <h1 data-i18n="admin_all_scenarios">แนวทางทั้งหมด</h1>
-    <button class="btn-add" id="addScenarioBtn">+ <span data-i18n="admin_add">เพิ่ม</span></button>
+  <div class="adm-header">
+    <div>
+      <h1 data-i18n="admin_title">จัดการแนวทาง</h1>
+      <p data-i18n="admin_subtitle">ข้อมูลผลผลิตจากแบบจำลอง DSSAT ที่เกษตรกรเห็นในแอป</p>
+    </div>
+    <div class="adm-header-actions">
+      <button class="btn-ghost sm" id="resetBtn"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg><span data-i18n="admin_reset_btn">รีเซ็ตเป็นข้อมูลวิจัย</span></button>
+      <button class="btn-cta sm" id="addScenarioBtn"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg><span data-i18n="admin_add">เพิ่มแนวทาง</span></button>
+    </div>
   </div>
 
-  <!-- Scenario list, filled in by admin-dashboard.js -->
-  <section class="scenario-list" id="scenarioList"></section>
-
-  <h2 class="summary-title" data-i18n="admin_summary_title">สรุประบบ</h2>
-  <section class="stats-row">
-    <div class="stat-box">
-      <div class="stat-number" id="summaryScenarioCount">0</div>
-      <div class="stat-label" data-i18n="admin_summary_scenario">แนวทาง</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-number" id="summaryProvinceCount">0</div>
-      <div class="stat-label" data-i18n="admin_summary_province">จังหวัด</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-number" id="summaryCropCount">0</div>
-      <div class="stat-label" data-i18n="admin_summary_crop">พันธุ์</div>
-    </div>
+  <!-- Summary -->
+  <section class="adm-stats">
+    <div class="adm-stat"><span class="adm-stat-label" data-i18n="admin_summary_scenario">แนวทาง</span><b id="summaryScenarioCount">0</b></div>
+    <div class="adm-stat"><span class="adm-stat-label" data-i18n="admin_summary_crop">พันธุ์</span><b id="summaryCropCount">0</b></div>
+    <div class="adm-stat"><span class="adm-stat-label" data-i18n="admin_summary_yield">ช่วงผลผลิต (ตัน/ไร่)</span><b id="summaryYieldRange">-</b></div>
   </section>
+
+  <!-- Variety filter + list, filled in by admin-dashboard.js -->
+  <div class="adm-filters" id="varietyFilter"></div>
+  <section class="adm-list" id="scenarioList"></section>
 </div>
 
-<nav class="bottom-nav admin-nav">
-  <button class="nav-icon-btn" aria-label="dashboard">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="3" y="3" width="7" height="7" rx="1.5"/>
-      <rect x="14" y="3" width="7" height="7" rx="1.5"/>
-      <rect x="3" y="14" width="7" height="7" rx="1.5"/>
-      <rect x="14" y="14" width="7" height="7" rx="1.5"/>
-    </svg>
-  </button>
+<nav class="bottom-nav">
+  <a class="nav-item active" href="admin-dashboard.html"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span data-i18n="admin_nav_scenarios">แนวทาง</span></a>
+  <a class="nav-item" href="index.html"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg><span data-i18n="admin_nav_app">ดูแอปเกษตรกร</span></a>
 </nav>
-
 
 <!-- ===== Add / Edit scenario modal ===== -->
 <div class="modal-overlay hidden" id="scenarioModalOverlay">
-  <div class="modal-sheet">
-    <h2 class="modal-title" id="scenarioModalTitle">เพิ่มแนวทางใหม่</h2>
+  <div class="modal-sheet adm-modal">
+    <div class="adm-modal-head">
+      <h2 class="modal-title" id="scenarioModalTitle">เพิ่มแนวทางใหม่</h2>
+      <button type="button" class="adm-close" id="closeModalBtn" aria-label="close">×</button>
+    </div>
     <form id="scenarioForm" novalidate>
-      <!-- ---- Basic info ---- -->
-      <div class="modal-section" data-i18n="modal_section_info">ข้อมูลทั่วไป</div>
-      <div class="field">
-        <label data-i18n="modal_name_label">ชื่อแนวทาง</label>
-        <input type="text" id="nameThInput" data-i18n-placeholder="modal_name_placeholder" placeholder="เช่น เกษตรกรรายย่อย — พึ่งน้ำฝน" required />
-      </div>
-      <div class="field">
-        <label data-i18n="modal_name_en_label">ชื่อภาษาอังกฤษ</label>
-        <input type="text" id="nameEnInput" data-i18n-placeholder="modal_name_en_placeholder" placeholder="เช่น Smallholder — Rain-fed" />
-      </div>
-      <div class="field">
-        <label data-i18n="modal_description_label">คำอธิบาย</label>
-        <textarea id="descriptionInput" rows="2"></textarea>
-      </div>
-      <div class="field">
-        <label data-i18n="modal_province_label">จังหวัด</label>
-        <select id="provinceInput" required>
-          <option value="khon_kaen" data-i18n="form_province_kk">ขอนแก่น</option>
-          <option value="udon_thani" data-i18n="form_province_ud">อุดรธานี</option>
-        </select>
-      </div>
 
-      <!-- ---- Matching conditions (compared with the farmer's form) ---- -->
-      <div class="modal-section" data-i18n="modal_section_match">เงื่อนไขการจับคู่</div>
-      <div class="field">
-        <label data-i18n="modal_variety_label">พันธุ์ (คั่นด้วย , )</label>
-        <input type="text" id="varietyInput" data-i18n-placeholder="modal_variety_placeholder" placeholder="ห้วยบง 80, ระยอง 11, Huay Bong 80" />
-      </div>
-      <div class="field-row">
+      <div class="modal-section" data-i18n="modal_section_match">เงื่อนไขการจับคู่ (4 อย่าง)</div>
+      <div class="field-grid">
         <div class="field">
-          <label data-i18n="form_planting_date">วันปลูก</label>
-          <select id="plantingInput">
-            <option value="early" data-i18n="form_planting_early">ต้นฤดูฝน (พ.ค.-มิ.ย.)</option>
-            <option value="late" data-i18n="form_planting_late">ปลายฤดูฝน (ต.ค.-พ.ย.)</option>
-          </select>
+          <label for="varietyInput" data-i18n="form_variety">พันธุ์มันสำปะหลัง</label>
+          <div class="select-wrap"><select id="varietyInput"><option value="KU50" data-i18n="variety_KU50">เกษตรศาสตร์ 50</option><option value="RY9" data-i18n="variety_RY9">ระยอง 9</option><option value="RY11" data-i18n="variety_RY11">ระยอง 11</option><option value="CMR38" data-i18n="variety_CMR38">CMR38-125-77</option></select></div>
         </div>
         <div class="field">
-          <label data-i18n="form_irrigation">การให้น้ำ</label>
-          <select id="irrigationInput">
-            <option value="rain_fed" data-i18n="form_irrigation_rain">อาศัยน้ำฝน (ไม่ให้น้ำเพิ่ม)</option>
-            <option value="system" data-i18n="form_irrigation_system">ให้น้ำตามคำแนะนำระบบ</option>
-          </select>
+          <label for="plantingInput" data-i18n="form_planting_date">วันปลูก</label>
+          <div class="select-wrap"><select id="plantingInput"><option value="early" data-i18n="form_planting_early">ต้นฤดูฝน (พ.ค.-มิ.ย.)</option><option value="late" data-i18n="form_planting_late">ปลายฤดูฝน (ต.ค.-พ.ย.)</option></select></div>
+        </div>
+        <div class="field">
+          <label for="irrigationInput" data-i18n="form_irrigation">การให้น้ำ</label>
+          <div class="select-wrap"><select id="irrigationInput"><option value="rain_fed" data-i18n="irrigation_short_rain">อาศัยน้ำฝน</option><option value="system" data-i18n="irrigation_short_system">ให้น้ำ</option></select></div>
+        </div>
+        <div class="field">
+          <label for="nitrogenInput" data-i18n="form_nitrogen">ปุ๋ยไนโตรเจน</label>
+          <div class="select-wrap"><select id="nitrogenInput"><option value="applied" data-i18n="chip_n_applied">ใส่ปุ๋ย N</option><option value="not_applied" data-i18n="chip_n_none">ไม่ใส่ปุ๋ย N</option></select></div>
         </div>
       </div>
 
-      <!-- ---- Outputs shown to the farmer ---- -->
-      <div class="modal-section" data-i18n="modal_section_output">ผลลัพธ์ / คำแนะนำ</div>
-      <div class="field-row">
+      <div class="modal-section" data-i18n="modal_section_output">ผลผลิต</div>
+      <div class="field-grid">
         <div class="field">
-          <label data-i18n="modal_yield_label">ผลผลิต (ตัน/ไร่)</label>
-          <input type="number" id="yieldInput" min="0" step="0.1" placeholder="12.0" />
+          <label for="dryInput" data-i18n="modal_dry_label">น้ำหนักแห้งจาก DSSAT (กก./เฮกตาร์)</label>
+          <input type="number" id="dryInput" min="0" step="1" placeholder="9350" />
         </div>
         <div class="field">
-          <label data-i18n="modal_water_label">น้ำ (ลบ.ม./ไร่/สัปดาห์)</label>
-          <input type="number" id="waterInput" min="0" step="0.1" data-i18n-placeholder="modal_water_placeholder" placeholder="เช่น 14" />
-        </div>
-      </div>
-      <div class="field-row">
-        <div class="field">
-          <label data-i18n="modal_wue_label">ประสิทธิภาพการใช้น้ำ (กก./ลบ.ม.)</label>
-          <input type="number" id="wueInput" min="0" step="0.1" placeholder="7.5" />
+          <label for="dmcInput" data-i18n="modal_dmc_label">% น้ำหนักแห้ง (DMC)</label>
+          <input type="number" id="dmcInput" min="0" step="0.1" placeholder="34.7" />
         </div>
         <div class="field">
-          <label data-i18n="modal_n_label">ปุ๋ยไนโตรเจน</label>
-          <input type="text" id="nFertilizerInput" data-i18n-placeholder="modal_n_placeholder" placeholder="14.4 กก.ไนโตรเจน/ไร่" />
+          <label for="yieldInput" data-i18n="modal_yield_label">ผลผลิตหัวสด (ตัน/ไร่)</label>
+          <input type="number" id="yieldInput" min="0" step="0.01" placeholder="4.31" />
+        </div>
+        <div class="field">
+          <label for="sdInput" data-i18n="modal_sd_label">± ความต่างแต่ละปี (ตัน/ไร่)</label>
+          <input type="number" id="sdInput" min="0" step="0.01" placeholder="0.54" />
         </div>
       </div>
-      <div class="field">
-        <label data-i18n="modal_frequency_label">ความถี่การให้น้ำ</label>
-        <input type="text" id="frequencyInput" data-i18n-placeholder="modal_frequency_placeholder" placeholder="เช่น ครั้งละ 24 ลบ.ม./ไร่ ทุก 12 วัน" />
+      <p class="adm-hint" data-i18n="modal_calc_hint">กรอกน้ำหนักแห้งและ % น้ำหนักแห้ง ระบบจะคำนวณผลผลิตหัวสดให้อัตโนมัติ</p>
+
+      <div class="modal-section" data-i18n="modal_section_text">ข้อความที่แสดงให้เกษตรกร</div>
+      <div class="pair">
+        <label data-i18n="f_name">ชื่อแนวทาง</label>
+        <div class="pair-row">
+          <div class="pair-col"><span class="lang-tag">TH</span><input type="text" id="nameThInput" /></div>
+          <div class="pair-col"><span class="lang-tag">EN</span><input type="text" id="nameEnInput" /></div>
+        </div>
       </div>
-      <div class="field">
-        <label data-i18n="modal_schedule_label">ตารางให้น้ำรายสัปดาห์</label>
-        <textarea id="scheduleInput" rows="2"></textarea>
+      <div class="pair">
+        <label data-i18n="f_desc">คำอธิบาย</label>
+        <div class="pair-row">
+          <div class="pair-col"><span class="lang-tag">TH</span><textarea id="descriptionInput" rows="2"></textarea></div>
+          <div class="pair-col"><span class="lang-tag">EN</span><textarea id="descriptionEnInput" rows="2"></textarea></div>
+        </div>
       </div>
-      <div class="field">
-        <label data-i18n="modal_source_label">แหล่งอ้างอิงข้อมูล (อังกฤษ)</label>
-        <textarea id="sourceInput" rows="2"></textarea>
+      <div class="pair">
+        <label data-i18n="f_freq">การให้น้ำ</label>
+        <div class="pair-row">
+          <div class="pair-col"><span class="lang-tag">TH</span><input type="text" id="frequencyInput" /></div>
+          <div class="pair-col"><span class="lang-tag">EN</span><input type="text" id="frequencyEnInput" /></div>
+        </div>
+      </div>
+      <div class="pair">
+        <label data-i18n="f_n">ปุ๋ยไนโตรเจน</label>
+        <div class="pair-row">
+          <div class="pair-col"><span class="lang-tag">TH</span><input type="text" id="nFertilizerInput" /></div>
+          <div class="pair-col"><span class="lang-tag">EN</span><input type="text" id="nFertilizerEnInput" /></div>
+        </div>
+      </div>
+      <div class="pair">
+        <label data-i18n="f_sched">ตารางการดูแล</label>
+        <div class="pair-row">
+          <div class="pair-col"><span class="lang-tag">TH</span><input type="text" id="scheduleInput" /></div>
+          <div class="pair-col"><span class="lang-tag">EN</span><input type="text" id="scheduleEnInput" /></div>
+        </div>
+      </div>
+      <div class="pair">
+        <label data-i18n="f_source">แหล่งอ้างอิง</label>
+        <div class="pair-row">
+          <div class="pair-col"><span class="lang-tag">TH</span><textarea id="sourceThInput" rows="2"></textarea></div>
+          <div class="pair-col"><span class="lang-tag">EN</span><textarea id="sourceInput" rows="2"></textarea></div>
+        </div>
       </div>
 
-      <!-- ---- Other-language versions (shown when the user switches language) ---- -->
-      <div class="modal-section" data-i18n="modal_section_lang">ข้อความภาษาอังกฤษ (แสดงเมื่อสลับเป็น EN)</div>
-      <div class="field">
-        <label data-i18n="modal_description_en_label">คำอธิบาย (อังกฤษ)</label>
-        <textarea id="descriptionEnInput" rows="2"></textarea>
-      </div>
-      <div class="field">
-        <label data-i18n="modal_frequency_en_label">ความถี่การให้น้ำ (อังกฤษ)</label>
-        <input type="text" id="frequencyEnInput" placeholder="24 m³/rai about every 12 days" />
-      </div>
-      <div class="field">
-        <label data-i18n="modal_schedule_en_label">ตารางให้น้ำ (อังกฤษ)</label>
-        <textarea id="scheduleEnInput" rows="2"></textarea>
-      </div>
-      <div class="field">
-        <label data-i18n="modal_n_en_label">ปุ๋ยไนโตรเจน (อังกฤษ)</label>
-        <input type="text" id="nFertilizerEnInput" placeholder="14.4 kg nitrogen/rai" />
-      </div>
-      <div class="field">
-        <label data-i18n="modal_source_th_label">แหล่งอ้างอิงข้อมูล (ไทย)</label>
-        <textarea id="sourceThInput" rows="2"></textarea>
-      </div>
       <div class="modal-actions">
-        <button type="button" class="btn-secondary" id="cancelModalBtn" data-i18n="modal_cancel">ยกเลิก</button>
-        <button type="submit" class="btn-primary" data-i18n="modal_save">บันทึก</button>
+        <button type="button" class="btn-ghost" id="cancelModalBtn" data-i18n="modal_cancel">ยกเลิก</button>
+        <button type="submit" class="btn-cta" id="saveModalBtn" data-i18n="modal_save">บันทึก</button>
       </div>
     </form>
   </div>
 </div>
 
-<!-- ===== Delete confirm modal ===== -->
+<!-- ===== Confirm modal (delete one / reset all) ===== -->
 <div class="modal-overlay hidden" id="deleteModalOverlay">
-  <div class="modal-sheet">
-    <h2 class="modal-title" data-i18n="modal_delete_title">ยืนยันการลบแนวทาง</h2>
-    <p id="deleteModalBody" style="color:var(--color-text-muted); font-size:14px; margin-bottom:18px;"></p>
+  <div class="modal-sheet adm-confirm">
+    <h2 class="modal-title" id="confirmTitle" data-i18n="modal_delete_title">ยืนยันการลบแนวทาง</h2>
+    <p id="deleteModalBody" class="adm-confirm-body"></p>
     <div class="modal-actions">
-      <button type="button" class="btn-secondary" id="cancelDeleteBtn" data-i18n="modal_cancel">ยกเลิก</button>
+      <button type="button" class="btn-ghost" id="cancelDeleteBtn" data-i18n="modal_cancel">ยกเลิก</button>
       <button type="button" class="btn-danger" id="confirmDeleteBtn" data-i18n="modal_delete_confirm">ลบแนวทาง</button>
     </div>
   </div>

@@ -1,63 +1,52 @@
 /* =========================================================
    netlify/functions/match.js
    POST /api/match
-   body: { province, variety, planting_date, irrigation_type, nitrogen }
-   (nitrogen = "applied" | "not_applied"; stored with the submission)
+   body: { variety, planting_date, irrigation_type, nitrogen, cultivated_area }
 
-   Rule-based matching: every scenario gets a score out of 100
-     province         40   (soil + weather differ by province)
-     irrigation_type  30   (rain-fed vs. irrigated)
-     planting season  20   (early vs. late rainy season)
-     variety          10   (farmer's text vs. scenario's variety list)
-   Ties are broken by the higher water-use efficiency, so the most
-   water-saving scenario is recommended first.
+   Exact matching: the 4 inputs together point to exactly ONE of the
+   32 DSSAT scenarios (4 varieties x 2 planting x 2 water x 2 nitrogen).
 
    Response:
-     { best, ranked: [...all scenarios with match_percent], input }
-   Each submission is also saved to the "submissions" store
-   (InputSubmission entity in the ER diagram).
+     {
+       best,          // the farmer's scenario (+ totals for their field)
+       alternatives,  // same variety + planting date, other water / nitrogen options
+       ranked,        // [best, ...alternatives]  (kept so result/compare pages still work)
+       input
+     }
+   Each submission is also saved to the "submissions" store.
    ========================================================= */
 
 const { openStore } = require("../lib/blob-store");
 
-const WEIGHTS = { province: 40, irrigation_type: 30, planting_season: 20, variety: 10 };
+const ALLOWED = {
+  variety: ["KU50", "RY9", "RY11", "CMR38"],
+  planting_date: ["early", "late"],
+  irrigation_type: ["rain_fed", "system"],
+  nitrogen: ["applied", "not_applied"],
+};
 
 function json(statusCode, body) {
   return { statusCode, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) };
 }
 
-let currentEvent = null;
-function storeFor(name) {
-  return openStore(name, currentEvent);
+function round(n, digits = 1) {
+  const f = 10 ** digits;
+  return Math.round(n * f) / f;
 }
 
-/** "ห้วยบง 80" / "Huay Bong-80" / "huaybong80" -> "ห้วยบง80" / "huaybong80" */
-function normalize(text) {
-  return String(text || "").toLowerCase().replace(/[\s\-_.]/g, "");
-}
-
-function varietyMatches(farmerVariety, scenarioVarieties) {
-  const input = normalize(farmerVariety);
-  if (!input) return false;
-  return String(scenarioVarieties || "")
-    .split(",")
-    .map(normalize)
-    .filter(Boolean)
-    .some((v) => v.includes(input) || input.includes(v));
-}
-
-function scoreScenario(scenario, input) {
-  const breakdown = {
-    province: scenario.province === input.province,
-    irrigation_type: scenario.irrigation_type === input.irrigation_type,
-    planting_season: scenario.planting_season === input.planting_date,
-    variety: varietyMatches(input.variety, scenario.variety),
+/** Add whole-field totals: yield per rai x number of rai (+ low/high range from yield_sd) */
+function withTotals(s, area) {
+  const perRai = Number(s.predicted_yield) || 0;
+  const sd = Number(s.yield_sd) || 0;
+  return {
+    ...s,
+    totals: {
+      area_rai: area,
+      yield_tons: round(perRai * area),
+      yield_tons_low: round(Math.max(perRai - sd, 0) * area),
+      yield_tons_high: round((perRai + sd) * area),
+    },
   };
-  const match_percent = Object.entries(breakdown).reduce(
-    (sum, [key, ok]) => sum + (ok ? WEIGHTS[key] : 0),
-    0
-  );
-  return { match_percent, breakdown };
 }
 
 exports.handler = async (event) => {
@@ -71,21 +60,25 @@ exports.handler = async (event) => {
   }
 
   const input = {
-    province: String(body.province || "").trim(),
+    province: "khon_kaen",
     variety: String(body.variety || "").trim(),
     planting_date: String(body.planting_date || "").trim(),
     irrigation_type: String(body.irrigation_type || "").trim(),
-    nitrogen: ["applied", "not_applied"].includes(body.nitrogen) ? body.nitrogen : "",
+    nitrogen: String(body.nitrogen || "").trim(),
+    cultivated_area: Number(body.cultivated_area),
   };
 
-  if (!input.province || !input.planting_date || !input.irrigation_type) {
-    return json(400, { error: "province, planting_date and irrigation_type are required" });
+  for (const [key, values] of Object.entries(ALLOWED)) {
+    if (!values.includes(input[key])) {
+      return json(400, { error: `${key} must be one of ${values.join(", ")}` });
+    }
+  }
+  if (!Number.isFinite(input.cultivated_area) || input.cultivated_area <= 0) {
+    return json(400, { error: "cultivated_area must be a number greater than 0" });
   }
 
-  currentEvent = event;
-
   try {
-    const scenarioStore = storeFor("scenarios");
+    const scenarioStore = openStore("scenarios", event);
     const { blobs } = await scenarioStore.list();
     const scenarios = (
       await Promise.all(blobs.map((b) => scenarioStore.get(b.key, { type: "json" })))
@@ -95,38 +88,43 @@ exports.handler = async (event) => {
       return json(404, { error: "No scenarios available yet — ask the admin to add scenario data" });
     }
 
-    const ranked = scenarios
+    const sameGroup = scenarios.filter(
+      (s) => s.variety === input.variety && s.planting_season === input.planting_date
+    );
+    const exact = sameGroup.find(
+      (s) => s.irrigation_type === input.irrigation_type && s.nitrogen === input.nitrogen
+    );
+
+    if (!exact) {
+      return json(404, { error: "No scenario found for this combination — ask the admin to check the data" });
+    }
+
+    const area = input.cultivated_area;
+    const best = { ...withTotals(exact, area), match_percent: 100 };
+    const alternatives = sameGroup
+      .filter((s) => s.scenario_id !== exact.scenario_id)
       .map((s) => {
-        const { match_percent, breakdown } = scoreScenario(s, input);
-        return {
-          ...s,
-          match_percent,
-          match_breakdown: breakdown,
-        };
+        const alt = withTotals(s, area);
+        alt.diff_per_rai = round(alt.predicted_yield - best.predicted_yield, 2);
+        alt.diff_tons = round(alt.totals.yield_tons - best.totals.yield_tons);
+        return alt;
       })
-      .sort(
-        (a, b) =>
-          b.match_percent - a.match_percent ||
-          (b.water_use_efficiency || 0) - (a.water_use_efficiency || 0)
-      );
+      .sort((a, b) => b.predicted_yield - a.predicted_yield);
 
-    const best = ranked[0];
-
-    // Save the submission (InputSubmission). Never block the farmer if this fails.
+    // Save the submission. Never block the farmer if this fails.
     try {
       const submission_id = Date.now();
-      await storeFor("submissions").setJSON(String(submission_id), {
+      await openStore("submissions", event).setJSON(String(submission_id), {
         submission_id,
         ...input,
         matched_scenario_id: best.scenario_id,
-        match_percent: best.match_percent,
         submitted_at: new Date().toISOString(),
       });
     } catch (err) {
       console.error("could not save submission:", err);
     }
 
-    return json(200, { best, ranked, input });
+    return json(200, { best, alternatives, ranked: [best, ...alternatives], input });
   } catch (err) {
     console.error("match error:", err);
     return json(500, { error: "Server error, please try again" });

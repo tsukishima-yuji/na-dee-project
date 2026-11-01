@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const formData = {
       province: "khon_kaen", // fixed: this version only covers the Khon Kaen production area
-      variety: document.getElementById("varietyInput").value.trim(),
+      variety: document.getElementById("varietyInput").value,
       planting_date: document.getElementById("plantingGroup").dataset.value || "",
       irrigation_type: document.getElementById("irrigationGroup").dataset.value || "",
       nitrogen: document.getElementById("nitrogenGroup").dataset.value || "",

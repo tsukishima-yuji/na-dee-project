@@ -2,9 +2,20 @@
    result.js — logic for result.html only
    Reads the /api/match response saved by input-form.js
    (sessionStorage "nadee_match_result") and shows:
-   best scenario + match %, predicted outputs (per rai),
-   irrigation advice, and why this scenario was matched.
+   - hero: total harvest for the field (+ normal-year range),
+     the inputs as chips, and the yield level gauge
+   - actionable recommendations (water, fertilizer, variety)
+   - buttons to the compare page / back to the form
+   The data source sits in a small ⓘ tooltip.
    ========================================================= */
+
+const FARMER_AVG_T_RAI = 3.0; // national average 2025/26 (fresh root, t/rai)
+const LEVELS = [
+  { key: "low", max: 2.5 },
+  { key: "mid", max: 4.0 },
+  { key: "high", max: Infinity },
+];
+const BAR_MAX = 7; // t/rai at the right end of the level bar
 
 document.addEventListener("DOMContentLoaded", renderPage);
 
@@ -12,195 +23,104 @@ function renderPage() {
   const root = document.getElementById("resultRoot");
   const result = readMatchResult();
 
-  if (!result || !result.best) {
+  if (!result || !result.best || !result.best.totals) {
     root.innerHTML = `
       <section class="empty-card">
         <p>${t("result_empty")}</p>
-        <a class="btn-primary" href="input-form.html">${t("home_cta")}</a>
+        <a class="btn-cta" href="input-form.html"><span>${t("home_cta")}</span>${icon("arrowRight")}</a>
       </section>`;
     return;
   }
 
-  const { best, input, ranked } = result;
-  const alternatives = ranked.filter((s) => s.scenario_id !== best.scenario_id && s.province === input.province);
+  const { best, input } = result;
+  const perRai = Number(best.predicted_yield) || 0;
+  const level = LEVELS.find((l) => perRai < l.max);
+  const markerPct = Math.min((perRai / BAR_MAX) * 100, 100);
+  const nApplied = best.nitrogen === "applied";
+  const irrigated = best.irrigation_type === "system";
 
   root.innerHTML = `
-    <!-- Best match -->
-    <section class="hero-card result-hero">
-      <span class="hero-eyebrow">${t("result_eyebrow")}</span>
-      <div class="result-hero-top">
-        <h1 class="hero-title">${escapeHtml(scenarioName(best))}</h1>
-        <div class="match-ring" style="--p:${best.match_percent}">
-          <span>${best.match_percent}%</span>
+    <!-- Hero: how much + how good -->
+    <section class="res-hero">
+      <div class="res-hero-main">
+        <span class="res-eyebrow"><span class="dot"></span>${t("result_eyebrow")}</span>
+        <div class="res-total">
+          <span class="res-total-num">${fmt(best.totals.yield_tons)}</span>
+          <span class="res-total-unit">${t("unit_ton")}</span>
         </div>
+        <p class="res-sub">${icon("trend")}
+          ${t("result_for_field")} ${fmt(input.cultivated_area)} ${t("unit_rai")}
+          · ${t("result_normal_year")} ${fmt(best.totals.yield_tons_low)}–${fmt(best.totals.yield_tons_high)} ${t("unit_ton")}
+        </p>
+        <p class="res-fresh">${t("result_fresh_note")}
+          ${best.source ? `<span class="info-tip" tabindex="0" role="button" aria-label="${t("result_source_title")}">${icon("info")}
+            <span class="info-tip-box" role="tooltip">${escapeHtml(localized(best, "source"))}</span></span>` : ""}
+        </p>
       </div>
-      <p class="hero-desc">${escapeHtml(localized(best, "description") || "")}</p>
-      <div class="input-chips">
-        <span>${escapeHtml(labelFor("province", input.province))}</span>
-        ${input.variety ? `<span>${escapeHtml(input.variety)}</span>` : ""}
-        <span>${escapeHtml(labelFor("planting", input.planting_date))}</span>
-        <span>${escapeHtml(labelFor("irrigation", input.irrigation_type))}</span>
-        ${input.nitrogen ? `<span>${escapeHtml(labelFor("nitrogen", input.nitrogen))}</span>` : ""}
+
+      <div class="res-level">
+        <div class="res-level-head">
+          <span class="res-level-title">${t("result_level_title")}</span>
+          <span class="level-badge level-${level.key}">${t("level_" + level.key)}</span>
+        </div>
+        <div class="res-level-value"><b>${fmt(perRai, 2)}</b> ${t("unit_ton_rai")}</div>
+        <div class="level-bar">
+          <div class="level-seg low"></div><div class="level-seg mid"></div><div class="level-seg high"></div>
+          <span class="level-marker" style="left:${markerPct}%"></span>
+        </div>
+        <div class="level-scale">
+          <span>0</span><span style="left:${(2.5 / BAR_MAX) * 100}%">2.5</span>
+          <span style="left:${(4 / BAR_MAX) * 100}%">4</span><span class="end">${BAR_MAX}</span>
+        </div>
+        <p class="res-level-compare">${compareText(perRai / FARMER_AVG_T_RAI)}</p>
+      </div>
+
+      <div class="res-chips">
+        <span class="res-chip">${icon("sprout")}${escapeHtml(t("variety_" + input.variety))}</span>
+        <span class="res-chip">${icon("calendar")}${escapeHtml(labelFor("planting", input.planting_date))}</span>
+        <span class="res-chip">${icon("droplet")}${escapeHtml(labelFor("irrigation", input.irrigation_type))}</span>
+        <span class="res-chip">${icon("leaf")}${escapeHtml(labelFor("nitrogen", input.nitrogen))}</span>
       </div>
     </section>
 
-    <div class="result-grid">
-    <div class="result-col">
-    <!-- Predicted outputs (per rai) -->
-    <h2 class="section-title">${t("result_outputs_title")}</h2>
-    <section class="stats-row">
-      <div class="stat-box">
-        <div class="stat-number">${fmt(best.predicted_yield)}</div>
-        <div class="stat-label">${t("compare_metric_yield")}</div>
-        <div class="stat-sub">${t("unit_ton_rai")}</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-number">${fmt(best.water_allocation_week)}</div>
-        <div class="stat-label">${t("compare_metric_water")}</div>
-        <div class="stat-sub">${t("unit_m3_rai_week")}</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-number">${fmt(best.water_use_efficiency)}</div>
-        <div class="stat-label">${t("compare_metric_wue")}</div>
-        <div class="stat-sub">${t("unit_kg_m3")}</div>
-      </div>
+    <!-- What to do -->
+    <h2 class="section-title">${t("rec_title")}</h2>
+    <section class="rec-card">
+      ${recRow("droplet", "blue", t("result_frequency"), localized(best, "irrigation_frequency"),
+        irrigated ? t("badge_managed") : t("badge_natural"), "blue")}
+      ${recRow("leaf", "green", t("result_fertilizer"), localized(best, "n_fertilizer"),
+        nApplied ? t("badge_important") : t("badge_not_applied"), nApplied ? "green" : "grey", nApplied)}
+      ${recRow("sprout", "amber", t("form_variety"), t("variety_" + best.variety), t("badge_selected"), "amber")}
     </section>
 
-    <!-- This week's weather (Open-Meteo), filled in by renderWeather() -->
-    <h2 class="section-title">${t("weather_title")}</h2>
-    <section class="info-card weather-card" id="weatherCard">
-      <p class="weather-loading">${t("weather_loading")}</p>
-    </section>
-
-    <!-- Irrigation advice -->
-    <h2 class="section-title">${t("result_advice_title")}</h2>
-    <section class="info-card">
-      ${infoRow("💧", t("result_frequency"), localized(best, "irrigation_frequency"))}
-      ${infoRow("📅", t("result_schedule"), localized(best, "weekly_schedule"))}
-      ${infoRow("🌱", t("result_fertilizer"), localized(best, "n_fertilizer"))}
-      ${infoRow("🌾", t("result_variety"), varietyForLang(best.variety))}
-    </section>
-
-    </div>
-    <div class="result-col">
-    <!-- Why this scenario -->
-    <h2 class="section-title">${t("result_why_title")}</h2>
-    <section class="info-card">
-      ${breakdownRow("province", 40, best.match_breakdown.province)}
-      ${breakdownRow("irrigation", 30, best.match_breakdown.irrigation_type)}
-      ${breakdownRow("planting", 20, best.match_breakdown.planting_season)}
-      ${breakdownRow("variety", 10, best.match_breakdown.variety)}
-    </section>
-
-    <!-- Other options -->
-    ${
-      alternatives.length
-        ? `<h2 class="section-title">${t("result_other_title")}</h2>
-           <section class="approach-list">
-             ${alternatives
-               .map(
-                 (s) => `
-               <div class="approach-item">
-                 <div>
-                   <div class="approach-name">${escapeHtml(scenarioName(s))}</div>
-                   <div class="approach-sub">${fmt(s.predicted_yield)} ${t("unit_ton_rai")} · ${fmt(s.water_allocation_week)} ${t("unit_m3_rai_week")}</div>
-                 </div>
-                 <span class="approach-badge">${s.match_percent}%</span>
-               </div>`
-               )
-               .join("")}
-           </section>`
-        : ""
-    }
-
-    </div>
-    </div>
-
-    ${best.source ? `<p class="source-note">${t("result_source")}: ${escapeHtml(localized(best, "source"))}</p>` : ""}
-
-    <div class="result-actions">
-      <a class="btn-primary" href="compare.html">${t("result_compare_btn")}</a>
-      <a class="btn-secondary" href="input-form.html">${t("result_again_btn")}</a>
+    <div class="res-actions">
+      <a class="btn-cta" href="compare.html">${icon("sparkles")}<span>${t("result_compare_btn")}</span>${icon("arrowRight")}</a>
+      <a class="btn-ghost" href="input-form.html">${icon("edit")}<span>${t("result_again_btn")}</span></a>
     </div>
   `;
-
-  renderWeather(best, input); // async — fills #weatherCard when Open-Meteo answers
 }
 
-/* ---------------- Weather (external API: Open-Meteo) ---------------- */
+/* ---------------- pieces ---------------- */
 
-async function renderWeather(best, input) {
-  const card = document.getElementById("weatherCard");
-  if (!card) return;
+function recRow(ico, tone, label, value, badge, badgeTone, highlight = false) {
+  return `
+    <div class="rec-row ${highlight ? "highlight" : ""}">
+      <span class="rec-ico ${tone}">${icon(ico)}</span>
+      <div class="rec-text">
+        <div class="rec-label">${label}</div>
+        <div class="rec-value">${escapeHtml(value || "-")}</div>
+      </div>
+      <span class="rec-badge ${badgeTone}">${badge}</span>
+    </div>`;
+}
 
-  let weather;
-  try {
-    weather = await getWeeklyWeather(input.province); // weather.js
-  } catch (err) {
-    console.error("weather error:", err);
-    // Error handling: the page still works with the research-based numbers
-    card.innerHTML = `<p class="weather-error">⚠️ ${t("weather_error")}</p>`;
-    return;
-  }
-
-  // The page may have been re-rendered (language switch) while we waited
-  const current = document.getElementById("weatherCard");
-  if (!current) return;
-
-  const adj = adjustWaterForWeather(best, weather, 1); // 1 = per rai
-  const maxRain = Math.max(...weather.days.map((d) => d.rain_mm), 5);
-  const locale = getLang() === "th" ? "th-TH" : "en-US";
-
-  let advice;
-  if (adj.base_per_rai === 0) advice = t("weather_advice_rainfed");
-  else if (adj.skip_irrigation) advice = t("weather_advice_skip");
-  else
-    advice = `${t("weather_advice_prefix")} <b>${fmt(adj.adjusted_per_rai)}</b> ${t("unit_m3_rai_week")}`;
-
-  current.innerHTML = `
-    <div class="weather-days">
-      ${weather.days
-        .map((d) => {
-          const day = new Date(d.date + "T00:00:00").toLocaleDateString(locale, { weekday: "short" });
-          const h = Math.max((d.rain_mm / maxRain) * 100, 3);
-          return `
-          <div class="weather-day">
-            <span class="wd-rain">${fmt(d.rain_mm)}</span>
-            <div class="wd-bar"><div style="height:${h}%"></div></div>
-            <span class="wd-name">${day}</span>
-            <span class="wd-temp">${Math.round(d.temp_max)}°</span>
-          </div>`;
-        })
-        .join("")}
-    </div>
-    <p class="weather-caption">${t("weather_rain_caption")}</p>
-
-    <div class="weather-stats">
-      <div><span>${t("weather_rain")}</span><b>${fmt(weather.total_rain_mm)} ${t("unit_mm")}</b></div>
-      <div><span>${t("weather_need")}</span><b>${fmt(adj.crop_need_mm)} ${t("unit_mm")}</b></div>
-      <div><span>${t("weather_cover")}</span><b>${adj.rain_cover_percent}%</b></div>
-    </div>
-
-    <div class="weather-advice ${adj.skip_irrigation ? "skip" : ""}">
-      <span>💧</span>
-      <p>${advice}
-        ${adj.saved_total > 0 && !adj.skip_irrigation ? `<br><small>${t("weather_saved")} ${fmt(adj.saved_total)} ${t("unit_m3_rai_week")}</small>` : ""}
-      </p>
-    </div>
-    <p class="weather-source">${t("weather_source")}</p>
-  `;
+function compareText(ratio) {
+  if (ratio >= 1.15) return `${t("level_vs_above")} ${fmt(ratio, 1)} ${t("level_vs_times")}`;
+  if (ratio <= 0.85) return t("level_vs_below");
+  return t("level_vs_same");
 }
 
 /* ---------------- helpers ---------------- */
-
-/** "ห้วยบง 80, ระยอง 11, Huay Bong 80, Rayong 11" -> Thai names in TH, English names in EN */
-function varietyForLang(list) {
-  const names = String(list || "").split(",").map((v) => v.trim()).filter(Boolean);
-  const thai = names.filter((v) => /[\u0E00-\u0E7F]/.test(v));
-  const other = names.filter((v) => !/[\u0E00-\u0E7F]/.test(v));
-  const pick = getLang() === "th" ? thai : other;
-  return (pick.length ? pick : names).join(", ");
-}
 
 function readMatchResult() {
   try {
@@ -210,50 +130,19 @@ function readMatchResult() {
   }
 }
 
-function scenarioName(s) {
-  return getLang() === "th" ? s.name_th : s.name_en || s.name_th;
-}
-
 function labelFor(kind, value) {
   const keys = {
-    province: { khon_kaen: "form_province_kk", udon_thani: "form_province_ud" },
     planting: { early: "form_planting_early", late: "form_planting_late" },
     irrigation: { rain_fed: "irrigation_short_rain", system: "irrigation_short_system" },
-    nitrogen: { applied: "form_nitrogen_applied", not_applied: "form_nitrogen_not_applied" },
+    nitrogen: { applied: "chip_n_applied", not_applied: "chip_n_none" },
   };
   const key = keys[kind] && keys[kind][value];
   return key ? t(key) : value || "-";
 }
 
-function infoRow(icon, label, value) {
-  return `
-    <div class="info-row">
-      <span class="info-icon">${icon}</span>
-      <div>
-        <div class="info-label">${label}</div>
-        <div class="info-value">${escapeHtml(value || "-")}</div>
-      </div>
-    </div>`;
-}
-
-function breakdownRow(kind, weight, matched) {
-  const labels = {
-    province: "form_province",
-    irrigation: "form_irrigation",
-    planting: "form_planting_date",
-    variety: "form_variety",
-  };
-  return `
-    <div class="breakdown-row ${matched ? "ok" : "miss"}">
-      <span class="breakdown-mark">${matched ? "✓" : "✕"}</span>
-      <span class="breakdown-label">${t(labels[kind])}</span>
-      <span class="breakdown-points">${matched ? weight : 0}/${weight}</span>
-    </div>`;
-}
-
-function fmt(n) {
+function fmt(n, digits = 1) {
   if (n === null || n === undefined || n === "") return "-";
-  return Number(n).toLocaleString(getLang() === "th" ? "th-TH" : "en-US", { maximumFractionDigits: 1 });
+  return Number(n).toLocaleString(getLang() === "th" ? "th-TH" : "en-US", { maximumFractionDigits: digits });
 }
 
 function escapeHtml(str) {
