@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
       planting_date: document.getElementById("plantingGroup").dataset.value || "",
       irrigation_type: document.getElementById("irrigationGroup").dataset.value || "",
       nitrogen: document.getElementById("nitrogenGroup").dataset.value || "",
+      cultivated_area: Number(document.getElementById("cultivatedArea").value),
       submitted_at: new Date().toISOString(),
     };
 
@@ -55,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     isValid = requireChoice("plantingGroup") && isValid;
     isValid = requireChoice("irrigationGroup") && isValid;
     isValid = requireChoice("nitrogenGroup") && isValid;
+    isValid = requireNumber("cultivatedArea") && isValid;
 
     return isValid;
   }
@@ -63,6 +65,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const group = document.getElementById(groupId);
     const field = group.closest(".field");
     const ok = !!group.dataset.value;
+    field.classList.toggle("has-error", !ok);
+    return ok;
+  }
+
+  function requireNumber(inputId) {
+    const input = document.getElementById(inputId);
+    const field = input.closest(".field");
+    const value = Number(input.value);
+    const ok = input.value.trim() !== "" && value > 0;
     field.classList.toggle("has-error", !ok);
     return ok;
   }
